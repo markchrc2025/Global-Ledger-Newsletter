@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static generation for content pages
-  output: "standalone",
+  // Vercel manages build output automatically — no `output` override needed.
 };
 
 export default nextConfig;
