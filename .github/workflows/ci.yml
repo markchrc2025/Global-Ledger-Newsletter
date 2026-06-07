@@ -1,0 +1,38 @@
+name: CI
+
+# Runs on every PR into main, and on direct pushes to main.
+# Mirrors Vercel's environment (Linux + Node 22) so build breaks — including
+# case-sensitive import bugs that pass on macOS — are caught in the PR,
+# before they ever reach a Vercel deploy.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build (next build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # The build doesn't need live credentials; the subscribe route reads
+          # these at request time. Defined empty so nothing is undefined.
+          RESEND_API_KEY: ""
+          RESEND_AUDIENCE_ID: ""
+          NEWSLETTER_FROM: "The Global Ledger <onboarding@resend.dev>"
