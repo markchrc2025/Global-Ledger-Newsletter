@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Archive — Every Issue · The Global Ledger</title>
+<meta name="description" content="Every issue of The Global Ledger, searchable by topic and region. One country, one idea, every Thursday — the full back catalogue." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f3efe2;
+    --paper-2:#ebe5d3;
+    --paper-3:#e3dcc6;
+    --ink:#16201a;
+    --ink-soft:#4a544a;
+    --forest:#15402c;
+    --forest-2:#1d5739;
+    --money:#3a7d57;
+    --gold:#a9803a;
+    --line:rgba(22,32,26,.18);
+    --line-2:rgba(22,32,26,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:18px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 46px;}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;}
+  a{color:inherit;text-decoration:none;}
+
+  .meridian{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .meridian svg{position:absolute;right:-8%;top:50%;transform:translateY(-50%);height:150%;opacity:.08;color:var(--forest);}
+
+  /* NAV */
+  nav{border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:50;background:var(--paper);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;}
+  .brand .g{width:24px;height:24px;color:var(--forest);}
+  .navlinks{display:flex;gap:8px;align-items:center;}
+  .navlinks a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding:8px 14px;transition:.2s;white-space:nowrap;}
+  .navlinks a:hover{color:var(--forest);}
+  .navlinks a.active{color:var(--forest);}
+  .nav-cta{background:var(--forest);color:var(--paper)!important;border-radius:2px;}
+  .nav-cta:hover{background:var(--forest-2);}
+
+  /* BREADCRUMB */
+  .crumb{border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .crumb .wrap{display:flex;align-items:center;gap:11px;height:42px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .crumb a:hover{color:var(--forest);}
+  .crumb .sep{opacity:.5;}
+  .crumb .here{color:var(--forest);}
+
+  /* HEADER */
+  .ahead{position:relative;overflow:hidden;border-bottom:1px solid var(--line-2);}
+  .ahead .wrap{position:relative;z-index:2;padding:58px 46px 50px;}
+  .ahead .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--money);margin-bottom:20px;}
+  .ahead h1{font-family:"Spectral",serif;font-weight:300;font-size:clamp(42px,5.6vw,76px);line-height:1.0;letter-spacing:-.022em;margin:0 0 20px;}
+  .ahead h1 b{font-weight:600;color:var(--forest);}
+  .ahead p{font-size:20px;color:var(--ink-soft);max-width:56ch;margin:0;line-height:1.5;}
+
+  /* CONTROLS */
+  .controls{position:sticky;top:64px;z-index:40;background:var(--paper);border-bottom:1px solid var(--line-2);}
+  .controls .wrap{padding:20px 46px;}
+  .ctrl-row{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;}
+  .filtblock{flex:1;min-width:0;}
+  .filtblock .flabel{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border:1px solid var(--line-2);border-radius:30px;background:var(--paper);color:var(--ink-soft);cursor:pointer;transition:.15s;white-space:nowrap;}
+  .chip:hover{border-color:var(--forest);color:var(--forest);}
+  .chip.on{background:var(--forest);color:var(--paper);border-color:var(--forest);}
+  .searchwrap{position:relative;flex:0 0 260px;}
+  .searchwrap .flabel{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;}
+  .searchwrap input{width:100%;font-family:"Spectral",serif;font-size:15px;padding:9px 13px 9px 34px;border:1px solid var(--line-2);border-radius:30px;background:var(--paper);color:var(--ink);}
+  .searchwrap input:focus{outline:none;border-color:var(--forest);}
+  .searchwrap .sic{position:absolute;left:12px;bottom:11px;width:15px;height:15px;color:var(--ink-soft);}
+
+  /* RESULTS META */
+  .rmeta{padding:24px 0 6px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .rmeta .count{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .rmeta .count b{color:var(--forest);}
+  .rmeta .clear{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;cursor:pointer;opacity:0;pointer-events:none;transition:.2s;}
+  .rmeta .clear.show{opacity:1;pointer-events:auto;}
+
+  /* FEATURED LATEST */
+  .feat{margin:28px 0 10px;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:var(--paper);display:grid;grid-template-columns:1.5fr 1fr;transition:.18s;}
+  .feat:hover{border-color:var(--money);}
+  .feat .fL{padding:34px 36px;}
+  .feat .flabel{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .feat .flabel .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+  .feat h2{font-family:"Spectral",serif;font-weight:500;font-size:32px;line-height:1.1;margin:0 0 12px;letter-spacing:-.01em;}
+  .feat p{font-size:16px;color:var(--ink-soft);margin:0 0 20px;line-height:1.5;max-width:48ch;}
+  .feat .ftags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .feat .ftag{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:2px;}
+  .feat .ftag.topic{background:var(--forest);color:var(--paper);}
+  .feat .ftag.region{border:1px solid var(--line-2);color:var(--money);}
+  .feat .ftag.free{color:var(--gold);}
+  .feat .fR{background:var(--forest);color:var(--paper);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:34px 32px;}
+  .feat .fR .lat{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(188,217,197,.13) 31px,rgba(188,217,197,.13) 32px);}
+  .feat .fR .num{position:relative;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:#bcd9c5;margin-bottom:8px;}
+  .feat .fR .big{position:relative;font-family:"Spectral",serif;font-weight:300;font-size:64px;line-height:.92;letter-spacing:-.02em;}
+  .feat .fR .cap{position:relative;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#bcd9c5;margin-top:8px;}
+  .feat .fR .go{position:relative;margin-top:22px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);border-bottom:1.5px solid var(--paper);padding-bottom:3px;align-self:flex-start;}
+
+  /* ISSUE LIST */
+  .ilist{margin-top:8px;}
+  .arow{display:grid;grid-template-columns:70px 104px 1fr auto;gap:24px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);transition:.16s;}
+  .arow[href]{cursor:pointer;}
+  .arow[href]:hover{background:var(--paper-2);padding-left:14px;padding-right:14px;border-radius:6px;}
+  .arow[href]:hover h3{color:var(--forest);}
+  .arow .ano{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--money);letter-spacing:.04em;}
+  .arow .adate{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .arow .amain h3{font-family:"Spectral",serif;font-weight:500;font-size:21px;line-height:1.18;margin:0 0 7px;}
+  .arow .amain p{font-size:14px;color:var(--ink-soft);margin:0 0 10px;line-height:1.45;max-width:64ch;}
+  .arow .atags{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+  .arow .atag{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid var(--line);color:var(--ink-soft);}
+  .arow .atag.t{color:var(--money);border-color:rgba(58,125,87,.4);}
+  .arow .ameta{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;}
+  .arow .ameta .acc{display:block;margin-bottom:5px;}
+  .arow .ameta .acc.free{color:var(--money);}
+  .arow .ameta .acc.prem{color:var(--gold);}
+  .arow .ameta .arrow{display:block;color:var(--forest);margin-top:6px;opacity:0;transition:.18s;}
+  .arow[href]:hover .ameta .arrow{opacity:1;}
+
+  .empty{display:none;text-align:center;padding:60px 0;color:var(--ink-soft);}
+  .empty.show{display:block;}
+  .empty .em-big{font-family:"Spectral",serif;font-size:24px;color:var(--ink);margin-bottom:8px;}
+  .empty .em-s{font-size:15px;}
+
+  /* SIGNUP STRIP */
+  .signstrip{margin:10px 0 0;background:var(--forest);color:var(--paper);border-radius:8px;padding:36px 40px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;}
+  .signstrip h3{font-family:"Spectral",serif;font-weight:400;font-size:27px;margin:0 0 6px;}
+  .signstrip p{font-size:15px;color:#cfe0d4;margin:0;}
+  .signstrip form{display:flex;gap:9px;min-width:340px;}
+  .signstrip input{flex:1;font-family:"Spectral",serif;font-size:15px;padding:13px 14px;border:1px solid rgba(243,239,226,.3);background:rgba(243,239,226,.07);color:var(--paper);border-radius:3px;}
+  .signstrip input::placeholder{color:rgba(243,239,226,.55);}
+  .signstrip input:focus{outline:none;border-color:var(--paper);}
+  .signstrip button{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--forest);border:none;padding:0 22px;border-radius:3px;cursor:pointer;font-weight:600;}
+  .signstrip button:hover{background:var(--paper-2);}
+
+  .section-pad{padding:34px 0 60px;}
+
+  footer{border-top:1px solid var(--line-2);padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-soft);}
+
+  @media(max-width:860px){
+    .feat{grid-template-columns:1fr;}
+    .feat .fR{flex-direction:row;align-items:center;justify-content:space-between;}
+    .arow{grid-template-columns:54px 1fr;gap:8px 16px;}
+    .arow .adate{grid-column:2;}
+    .arow .amain{grid-column:1 / -1;}
+    .arow .ameta{grid-column:1 / -1;text-align:left;}
+    .arow .ameta .arrow{display:none;}
+    .searchwrap{flex:1 1 100%;}
+    .signstrip{grid-template-columns:1fr;}
+    .signstrip form{min-width:0;}
+  }
+  @media(max-width:560px){
+    .wrap,.ahead .wrap,.controls .wrap{padding-left:22px;padding-right:22px;}
+    .controls{position:static;}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <div class="brand">
+        <svg class="g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10.5"/><ellipse cx="12" cy="12" rx="4.5" ry="10.5"/><line x1="1.5" y1="12" x2="22.5" y2="12"/><path d="M3.5 7 q8.5 4 17 0 M3.5 17 q8.5 -4 17 0"/></svg>
+        The Global Ledger
+      </div>
+      <div class="navlinks">
+        <a href="../directions/the-global-ledger.html">Home</a>
+        <a href="#" class="active">Issues</a>
+        <a href="hub-corporate-tax.html">Topics</a>
+        <a href="premium.html">Premium</a>
+        <a href="../directions/the-global-ledger.html#subscribe" class="nav-cta">Subscribe Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb">
+    <div class="wrap">
+      <a href="../directions/the-global-ledger.html">Home</a>
+      <span class="sep">/</span>
+      <span class="here">The Archive</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="ahead">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="110"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="60" ry="190"/><ellipse cx="200" cy="200" rx="120" ry="190"/>
+        <line x1="10" y1="200" x2="390" y2="200"/><path d="M30 120 q170 60 340 0 M30 280 q170 -60 340 0"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <div class="eyebrow">The Archive</div>
+      <h1>Every issue, <b>one place</b>.</h1>
+      <p>One country, one idea, every Thursday — the full back catalogue. Filter by topic or region, or search for the jurisdiction on your mind.</p>
+    </div>
+  </header>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="wrap">
+      <div class="ctrl-row">
+        <div class="filtblock">
+          <div class="flabel">Filter by topic</div>
+          <div class="chips" id="topicChips">
+            <button class="chip on" data-topic="all">All topics</button>
+            <button class="chip" data-topic="Corporate Tax">Corporate Tax</button>
+            <button class="chip" data-topic="Consumption Tax">Consumption Tax</button>
+            <button class="chip" data-topic="Cross-Border">Cross-Border</button>
+            <button class="chip" data-topic="Tax Economics">Tax Economics</button>
+            <button class="chip" data-topic="Compliance">Compliance</button>
+          </div>
+        </div>
+        <div class="searchwrap">
+          <div class="flabel">Search</div>
+          <svg class="sic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <input type="text" id="search" placeholder="e.g. Estonia, VAT, minimum tax…" />
+        </div>
+      </div>
+      <div class="ctrl-row" style="margin-top:16px;">
+        <div class="filtblock">
+          <div class="flabel">Filter by region</div>
+          <div class="chips" id="regionChips">
+            <button class="chip on" data-region="all">All regions</button>
+            <button class="chip" data-region="Europe">Europe</button>
+            <button class="chip" data-region="Middle East">Middle East</button>
+            <button class="chip" data-region="Nordics">Nordics</button>
+            <button class="chip" data-region="Asia">Asia</button>
+            <button class="chip" data-region="Americas">Americas</button>
+            <button class="chip" data-region="UK">UK</button>
+            <button class="chip" data-region="Global">Global</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <main class="wrap section-pad">
+    <div class="rmeta">
+      <div class="count" id="count">Showing <b>16</b> of 16 issues</div>
+      <div class="clear" id="clearBtn">Clear filters ✕</div>
+    </div>
+
+    <!-- FEATURED LATEST -->
+    <a class="feat issue" href="article-estonia.html" data-topic="Corporate Tax" data-region="Europe" data-title="estonia distribution tax profit reinvest corporate">
+      <div class="fL">
+        <div class="flabel"><span class="dot"></span>Latest issue · № 27</div>
+        <h2>The country that taxes profit only when you take it out</h2>
+        <p>Estonia charges 0% on profit you reinvest and 22% the moment you distribute it — the system founders everywhere keep citing, with the data behind it.</p>
+        <div class="ftags">
+          <span class="ftag topic">Corporate Tax</span>
+          <span class="ftag region">Europe · Estonia</span>
+          <span class="ftag free">Free · 6 min</span>
+        </div>
+      </div>
+      <div class="fR">
+        <div class="lat"></div>
+        <div class="num">Filed · Tallinn</div>
+        <div class="big">0%</div>
+        <div class="cap">on reinvested profit</div>
+        <span class="go">Read the issue →</span>
+      </div>
+    </a>
+
+    <!-- ISSUE LIST -->
+    <div class="ilist" id="ilist">
+
+      <div class="arow issue" data-topic="Compliance" data-region="UK" data-title="why tax year starts april calendar">
+        <div class="ano">№ 26</div>
+        <div class="adate">May 29, 2026</div>
+        <div class="amain">
+          <h3>Why the tax year starts in April</h3>
+          <p>Blame an 18th-century calendar bug nobody ever fixed. A short, true, slightly absurd story.</p>
+          <div class="atags"><span class="atag t">Compliance</span><span class="atag">UK</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>5 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Tax Economics" data-region="Europe" data-title="carbon border tax cbam europe exporters">
+        <div class="ano">№ 25</div>
+        <div class="adate">May 22, 2026</div>
+        <div class="amain">
+          <h3>Carbon border taxes arrive in Europe</h3>
+          <p>A primer for exporters on CBAM — the levy that taxes the carbon baked into what crosses the border.</p>
+          <div class="atags"><span class="atag t">Tax Economics</span><span class="atag">Europe</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Cross-Border" data-region="Global" data-title="digital nomad visa tax trap residency">
+        <div class="ano">№ 24</div>
+        <div class="adate">May 15, 2026</div>
+        <div class="amain">
+          <h3>Digital nomad visas are a tax trap dressed as a beach</h3>
+          <p>The residency rules the brochures skip — and how a year abroad can quietly land you two tax bills.</p>
+          <div class="atags"><span class="atag t">Cross-Border</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>8 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Consumption Tax" data-region="Global" data-title="vat gst sales tax consumption difference">
+        <div class="ano">№ 23</div>
+        <div class="adate">May 8, 2026</div>
+        <div class="amain">
+          <h3>VAT, GST &amp; sales tax: one idea, three headaches</h3>
+          <p>They all tax consumption — and behave nothing alike. A field guide for anyone selling across a border.</p>
+          <div class="atags"><span class="atag t">Consumption Tax</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>6 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Tax Economics" data-region="Global" data-title="global minimum tax pillar two 15 percent multinational">
+        <div class="ano">№ 22</div>
+        <div class="adate">May 1, 2026</div>
+        <div class="amain">
+          <h3>The global minimum tax, in human language</h3>
+          <p>Pillar Two sounds like flat-pack furniture. It's really a 15% floor under the world's biggest companies.</p>
+          <div class="atags"><span class="atag t">Tax Economics</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Corporate Tax" data-region="Middle East" data-title="uae 9 percent corporate tax gulf zero">
+        <div class="ano">№ 21</div>
+        <div class="adate">Apr 24, 2026</div>
+        <div class="amain">
+          <h3>The end of the zero-tax dream? The UAE's new 9%</h3>
+          <p>A region built on no income tax introduces a corporate levy. What changes for founders and free zones.</p>
+          <div class="atags"><span class="atag t">Corporate Tax</span><span class="atag">Middle East</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Cross-Border" data-region="Nordics" data-title="norway exit tax founders leaving wealth">
+        <div class="ano">№ 20</div>
+        <div class="adate">Apr 17, 2026</div>
+        <div class="amain">
+          <h3>Norway's exit tax and the founders leaving</h3>
+          <p>What the headlines miss about wealth, mobility, and the real numbers behind the great departure.</p>
+          <div class="atags"><span class="atag t">Cross-Border</span><span class="atag">Nordics</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>8 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Corporate Tax" data-region="Asia" data-title="singapore territorial system exemption startup">
+        <div class="ano">№ 19</div>
+        <div class="adate">Apr 10, 2026</div>
+        <div class="amain">
+          <h3>Singapore's territorial system, and the exemption founders miss</h3>
+          <p>A headline 17% that almost nobody pays in year one. The partial exemption, explained with the math.</p>
+          <div class="atags"><span class="atag t">Corporate Tax</span><span class="atag">Asia</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>8 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Corporate Tax" data-region="Europe" data-title="ireland 12.5 percent ip software headquarters">
+        <div class="ano">№ 18</div>
+        <div class="adate">Apr 3, 2026</div>
+        <div class="amain">
+          <h3>Ireland's 12.5%, and the machinery behind it</h3>
+          <p>How a small rate plus a clever base turned one country into the HQ of half the software you use.</p>
+          <div class="atags"><span class="atag t">Corporate Tax</span><span class="atag">Europe</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>8 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Tax Economics" data-region="Global" data-title="depreciation industrial policy write-off factories">
+        <div class="ano">№ 17</div>
+        <div class="adate">Mar 27, 2026</div>
+        <div class="amain">
+          <h3>Depreciation, but make it geopolitics</h3>
+          <p>How write-off schedules quietly steer where the world builds its factories. Tax as industrial policy.</p>
+          <div class="atags"><span class="atag t">Tax Economics</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Consumption Tax" data-region="Europe" data-title="eu vat one stop shop oss ecommerce">
+        <div class="ano">№ 16</div>
+        <div class="adate">Mar 20, 2026</div>
+        <div class="amain">
+          <h3>The EU VAT One-Stop-Shop, explained</h3>
+          <p>One registration to sell across 27 countries — the rule that made cross-border e-commerce bearable.</p>
+          <div class="atags"><span class="atag t">Consumption Tax</span><span class="atag">Europe</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>6 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Corporate Tax" data-region="Global" data-title="effective versus headline rate jurisdictions worked example">
+        <div class="ano">№ 15</div>
+        <div class="adate">Mar 13, 2026</div>
+        <div class="amain">
+          <h3>Effective vs headline: the rate that actually matters</h3>
+          <p>A worked example across three jurisdictions showing why the press-release number is rarely what you pay.</p>
+          <div class="atags"><span class="atag t">Corporate Tax</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>6 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Compliance" data-region="Global" data-title="first cross border filing step by step guide">
+        <div class="ano">№ 14</div>
+        <div class="adate">Mar 6, 2026</div>
+        <div class="amain">
+          <h3>Your first cross-border filing, step by step</h3>
+          <p>The practical walkthrough for founders facing two tax authorities for the first time. No jargon.</p>
+          <div class="atags"><span class="atag t">Compliance</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>9 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Tax Economics" data-region="Global" data-title="tonnage tax shipping special deal flags">
+        <div class="ano">№ 13</div>
+        <div class="adate">Feb 27, 2026</div>
+        <div class="amain">
+          <h3>Tonnage tax: why shipping plays by its own rules</h3>
+          <p>An entire industry taxed on the size of its ships, not its profit. How the strangest regime in tax works.</p>
+          <div class="atags"><span class="atag t">Tax Economics</span><span class="atag">Global</span></div>
+        </div>
+        <div class="ameta"><span class="acc prem">Premium</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+      <div class="arow issue" data-topic="Cross-Border" data-region="Americas" data-title="us citizenship based taxation expats fatca">
+        <div class="ano">№ 12</div>
+        <div class="adate">Feb 20, 2026</div>
+        <div class="amain">
+          <h3>The country that taxes you wherever you live</h3>
+          <p>America taxes its citizens on worldwide income — for life, anywhere. The expat's unavoidable headache.</p>
+          <div class="atags"><span class="atag t">Cross-Border</span><span class="atag">Americas</span></div>
+        </div>
+        <div class="ameta"><span class="acc free">Free</span>7 min<span class="arrow">→</span></div>
+      </div>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty" id="empty">
+      <div class="em-big">No issues match those filters.</div>
+      <div class="em-s">Try removing a filter or searching a different term.</div>
+    </div>
+
+    <!-- SIGNUP STRIP -->
+    <div class="signstrip" style="margin-top:46px;">
+      <div>
+        <h3>Never miss the next one.</h3>
+        <p>New issue every Thursday — free, in plain English, with the data to back it.</p>
+      </div>
+      <form onsubmit="this.querySelector('button').textContent='✓ Subscribed';return false;">
+        <input type="email" placeholder="you@example.com" required />
+        <button type="submit">Subscribe — free</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">The Global Ledger · The Archive</span>
+      <span class="mono">© MMXXVI · One country, one idea, every Thursday</span>
+    </div>
+  </footer>
+
+  <script>
+    var state = { topic:'all', region:'all', q:'' };
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    var countEl = document.getElementById('count');
+    var emptyEl = document.getElementById('empty');
+    var clearBtn = document.getElementById('clearBtn');
+    var total = rows.length;
+
+    function apply(){
+      var shown = 0;
+      rows.forEach(function(r){
+        var t = r.getAttribute('data-topic');
+        var rg = r.getAttribute('data-region');
+        var title = r.getAttribute('data-title') || '';
+        var okT = state.topic === 'all' || t === state.topic;
+        var okR = state.region === 'all' || rg === state.region;
+        var okQ = !state.q || title.indexOf(state.q) !== -1 || t.toLowerCase().indexOf(state.q) !== -1 || rg.toLowerCase().indexOf(state.q) !== -1;
+        var show = okT && okR && okQ;
+        r.style.display = show ? '' : 'none';
+        if(show) shown++;
+      });
+      countEl.innerHTML = 'Showing <b>' + shown + '</b> of ' + total + ' issues';
+      emptyEl.classList.toggle('show', shown === 0);
+      var active = state.topic !== 'all' || state.region !== 'all' || state.q !== '';
+      clearBtn.classList.toggle('show', active);
+    }
+
+    function wireChips(containerId, key){
+      var c = document.getElementById(containerId);
+      c.addEventListener('click', function(e){
+        var btn = e.target.closest('.chip');
+        if(!btn) return;
+        c.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('on'); });
+        btn.classList.add('on');
+        state[key] = btn.getAttribute('data-' + key);
+        apply();
+      });
+    }
+    wireChips('topicChips','topic');
+    wireChips('regionChips','region');
+
+    document.getElementById('search').addEventListener('input', function(e){
+      state.q = e.target.value.trim().toLowerCase();
+      apply();
+    });
+
+    clearBtn.addEventListener('click', function(){
+      state = { topic:'all', region:'all', q:'' };
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.chips').forEach(function(c){
+        c.querySelectorAll('.chip').forEach(function(x,i){ x.classList.toggle('on', i===0); });
+      });
+      apply();
+    });
+
+    apply();
+  </script>
+</body>
+</html>

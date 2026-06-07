@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Country That Taxes Profit Only When You Take It Out — The Global Ledger</title>
+<meta name="description" content="Estonia taxes corporate profit only on distribution — 22% when you take it out, 0% while it's reinvested. A data-backed deep dive on the system founders keep citing." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f3efe2;
+    --paper-2:#ebe5d3;
+    --paper-3:#e3dcc6;
+    --ink:#16201a;
+    --ink-soft:#4a544a;
+    --forest:#15402c;
+    --forest-2:#1d5739;
+    --money:#3a7d57;
+    --money-l:#5fa37b;
+    --gold:#a9803a;
+    --line:rgba(22,32,26,.18);
+    --line-2:rgba(22,32,26,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:18px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 46px;}
+  .read-col{max-width:720px;margin:0 auto;}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;}
+  a{color:inherit;text-decoration:none;}
+
+  .meridian{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .meridian svg{position:absolute;right:-8%;top:50%;transform:translateY(-50%);height:150%;opacity:.08;color:var(--forest);}
+
+  /* NAV */
+  nav{border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:50;background:var(--paper);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;}
+  .brand .g{width:24px;height:24px;color:var(--forest);}
+  .navlinks{display:flex;gap:8px;align-items:center;}
+  .navlinks a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding:8px 14px;transition:.2s;white-space:nowrap;}
+  .navlinks a:hover{color:var(--forest);}
+  .nav-cta{background:var(--forest);color:var(--paper)!important;border-radius:2px;}
+  .nav-cta:hover{background:var(--forest-2);}
+
+  /* progress bar */
+  .progress{position:fixed;top:0;left:0;height:3px;background:var(--money);width:0;z-index:60;transition:width .1s linear;}
+
+  /* BREADCRUMB */
+  .crumb{border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .crumb .wrap{display:flex;align-items:center;gap:11px;height:42px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .crumb a:hover{color:var(--forest);}
+  .crumb .sep{opacity:.5;}
+  .crumb .here{color:var(--forest);}
+
+  /* ARTICLE HEADER */
+  .ahead{position:relative;overflow:hidden;border-bottom:1px solid var(--line-2);}
+  .ahead .wrap{position:relative;z-index:2;padding:60px 46px 52px;}
+  .ahead .tagrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
+  .tagchip{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:2px;white-space:nowrap;}
+  .tagchip.topic{background:var(--forest);color:var(--paper);}
+  .tagchip.region{border:1px solid var(--line-2);color:var(--money);}
+  .tagchip.free{color:var(--gold);border:1px solid var(--gold);}
+  .ahead h1{font-family:"Spectral",serif;font-weight:300;font-size:clamp(40px,5.4vw,72px);line-height:1.02;letter-spacing:-.022em;margin:0 0 24px;max-width:18ch;}
+  .ahead h1 b{font-weight:600;color:var(--forest);}
+  .ahead .standfirst{font-family:"Spectral",serif;font-style:italic;font-size:23px;color:var(--ink-soft);max-width:60ch;margin:0 0 34px;line-height:1.45;}
+  .byline{display:flex;align-items:center;gap:22px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);padding-top:22px;border-top:1px solid var(--line);}
+  .byline .b-strong{color:var(--forest);}
+  .byline .dot{width:4px;height:4px;border-radius:50%;background:var(--money);}
+
+  /* AT A GLANCE STRIP */
+  .glance{border-bottom:1px solid var(--line-2);background:var(--paper-2);}
+  .glance .wrap{padding:30px 46px;}
+  .glance .gtitle{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--money);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  .glance .gtitle::after{content:"";flex:1;height:1px;background:var(--line);}
+  .ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+  .gstat{padding:0 28px;border-right:1px solid var(--line);}
+  .gstat:first-child{padding-left:0;}
+  .gstat:last-child{border-right:none;padding-right:0;}
+  .gstat .gn{font-family:"Spectral",serif;font-weight:400;font-size:46px;line-height:1;color:var(--forest);letter-spacing:-.01em;}
+  .gstat .gn .small{font-size:22px;}
+  .gstat .gl{font-size:14.5px;color:var(--ink);margin-top:10px;line-height:1.35;}
+  .gstat .gsrc{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:10px;}
+
+  /* BODY */
+  .body{padding:60px 0 30px;}
+  .body p{font-size:19px;line-height:1.7;margin:0 0 24px;}
+  .body p.lede{font-size:23px;line-height:1.5;color:var(--ink);}
+  .body .drop::first-letter{float:left;font-family:"Spectral",serif;font-weight:500;font-size:82px;line-height:.7;padding:8px 14px 0 0;color:var(--forest);}
+  .body h2{font-family:"Spectral",serif;font-weight:500;font-size:32px;line-height:1.1;margin:50px 0 18px;letter-spacing:-.012em;}
+  .body h2 .hn{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--money);letter-spacing:.1em;display:block;margin-bottom:10px;}
+  .body em{font-style:italic;}
+  .body strong{font-weight:600;}
+  .body a.inline{color:var(--forest);border-bottom:1px solid var(--money);}
+  .pullquote{border-left:3px solid var(--forest);padding:8px 0 8px 28px;margin:40px 0;font-family:"Spectral",serif;font-style:italic;font-weight:400;font-size:27px;line-height:1.32;color:var(--forest);}
+
+  /* FIGURE / CHART SHELL */
+  figure.fig{margin:44px 0;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:var(--paper);}
+  figure.fig.wide{margin-left:-80px;margin-right:-80px;}
+  .fig .fhead{padding:22px 26px 18px;border-bottom:1px solid var(--line);}
+  .fig .fk{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--money);margin-bottom:9px;}
+  .fig .ft{font-family:"Spectral",serif;font-weight:500;font-size:21px;line-height:1.2;margin:0;}
+  .fig .fbody{padding:28px 26px 24px;}
+  figcaption{padding:14px 26px 18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft);line-height:1.5;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  figcaption .src{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+
+  /* HERO CHART — reinvest vs distribute */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .cbox{border-radius:6px;padding:26px 24px;}
+  .cbox.zero{background:var(--paper-2);border:1px solid var(--line);}
+  .cbox.tax{background:var(--forest);color:var(--paper);}
+  .cbox .clab{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;}
+  .cbox.zero .clab{color:var(--money);}
+  .cbox.tax .clab{color:#bcd9c5;}
+  .cbox .cscene{font-size:14px;color:inherit;opacity:.85;margin-bottom:18px;min-height:40px;}
+  .cbox .cbig{font-family:"Spectral",serif;font-weight:300;font-size:62px;line-height:.95;letter-spacing:-.02em;}
+  .cbox.zero .cbig{color:var(--forest);}
+  .cbox .csub{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-top:10px;opacity:.8;}
+  .cbar{height:8px;border-radius:4px;margin-top:18px;overflow:hidden;background:rgba(22,32,26,.12);}
+  .cbox.tax .cbar{background:rgba(243,239,226,.18);}
+  .cbar i{display:block;height:100%;background:var(--money);}
+  .cbox.tax .cbar i{background:var(--paper);}
+
+  /* COLUMN CHART — rate over time */
+  .cols{display:flex;align-items:flex-end;gap:0;height:230px;border-bottom:2px solid var(--line-2);position:relative;padding-top:10px;}
+  .colitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;}
+  .colitem .colbar{width:64px;background:var(--money);border-radius:4px 4px 0 0;position:relative;display:flex;justify-content:center;transition:height .8s cubic-bezier(.2,.7,.2,1);}
+  .colitem.now .colbar{background:var(--forest);}
+  .colitem.future .colbar{background:repeating-linear-gradient(135deg,var(--money-l),var(--money-l) 6px,transparent 6px,transparent 11px);border:1px dashed var(--money);}
+  .colitem .colval{position:absolute;top:-26px;font-family:"Spectral",serif;font-size:21px;color:var(--ink);}
+  .colaxis{display:flex;margin-top:12px;}
+  .colaxis .colx{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);}
+  .colaxis .colx b{display:block;color:var(--forest);font-weight:600;margin-top:3px;font-size:9px;letter-spacing:.1em;}
+
+  /* HORIZONTAL BAR CHART — global comparison */
+  .hbars{position:relative;padding-top:6px;}
+  .hbar{margin-bottom:15px;position:relative;z-index:2;}
+  .hbar .htop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .hbar .hname{font-size:14.5px;}
+  .hbar .hname b{font-weight:600;}
+  .hbar .hval{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--forest);font-weight:500;}
+  .hbar .htrack{height:18px;background:var(--paper-3);border-radius:3px;overflow:hidden;}
+  .hbar .hfill{height:100%;border-radius:3px;background:var(--money);transition:width .9s cubic-bezier(.2,.7,.2,1);}
+  .hbar.hl .hfill{background:var(--forest);}
+  .hbar.muted .hfill{background:var(--money-l);opacity:.55;}
+  .refline{position:absolute;top:24px;bottom:30px;border-left:2px dashed var(--gold);z-index:5;}
+  .refline .rl-lab{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--paper);padding:0 6px;}
+  .haxis{display:flex;justify-content:space-between;margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink-soft);letter-spacing:.06em;}
+
+  /* DATA TABLE */
+  .dtable{width:100%;border-collapse:collapse;font-size:15px;}
+  .dtable th,.dtable td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);}
+  .dtable thead th{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1.5px solid var(--line-2);}
+  .dtable td.num{font-family:"IBM Plex Mono",monospace;color:var(--forest);text-align:right;}
+  .dtable tbody tr:hover{background:var(--paper-2);}
+  .dtable .country{font-weight:500;}
+
+  /* INLINE SIGNUP */
+  .inlsign{background:var(--forest);color:var(--paper);border-radius:8px;padding:34px 38px;margin:48px 0;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;position:relative;overflow:hidden;}
+  .inlsign .ist h3{font-family:"Spectral",serif;font-weight:400;font-size:26px;margin:0 0 8px;line-height:1.15;}
+  .inlsign .ist p{font-size:15px;color:#cfe0d4;margin:0;}
+  .inlsign form{display:flex;flex-direction:column;gap:9px;min-width:300px;}
+  .inlsign input{font-family:"Spectral",serif;font-size:15px;padding:13px 14px;border:1px solid rgba(243,239,226,.3);background:rgba(243,239,226,.07);color:var(--paper);border-radius:3px;}
+  .inlsign input::placeholder{color:rgba(243,239,226,.55);}
+  .inlsign input:focus{outline:none;border-color:var(--paper);}
+  .inlsign button{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--paper);color:var(--forest);border:none;padding:13px;border-radius:3px;cursor:pointer;font-weight:600;}
+  .inlsign button:hover{background:var(--paper-2);}
+
+  /* SOURCES BOX */
+  .sources{border:1px solid var(--line-2);border-radius:8px;background:var(--paper-2);padding:28px 30px;margin:46px 0 10px;}
+  .sources h4{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--money);margin:0 0 16px;}
+  .sources ol{margin:0;padding:0 0 0 20px;}
+  .sources li{font-size:14px;color:var(--ink-soft);line-height:1.5;margin-bottom:9px;}
+  .sources li b{color:var(--ink);font-weight:500;}
+  .sources .asof{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .sources .disclaim{font-size:13px;font-style:italic;color:var(--ink-soft);margin-top:12px;line-height:1.5;}
+
+  /* RELATED */
+  .related{border-top:1px solid var(--line-2);padding:56px 0;}
+  .related .shead{display:flex;align-items:baseline;gap:18px;margin-bottom:28px;}
+  .related .shead .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--money);}
+  .related .shead h3{font-family:"Spectral",serif;font-weight:500;font-size:24px;margin:0;}
+  .related .shead .rule{flex:1;height:1px;background:var(--line);}
+  .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .rcard{border:1px solid var(--line-2);border-radius:6px;padding:24px 22px;transition:.18s;}
+  .rcard:hover{background:var(--paper-2);transform:translateY(-2px);}
+  .rcard .rk{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--money);margin-bottom:12px;}
+  .rcard h4{font-family:"Spectral",serif;font-weight:500;font-size:19px;margin:0 0 8px;line-height:1.18;}
+  .rcard p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.45;}
+
+  /* FINAL */
+  .final{padding:80px 0;position:relative;overflow:hidden;border-top:1px solid var(--line-2);background:var(--paper-2);}
+  .final .meridian svg{left:50%;right:auto;transform:translate(-50%,-50%);}
+  .final .wrap{position:relative;z-index:2;text-align:center;}
+  .final h2{font-family:"Spectral",serif;font-weight:300;font-size:clamp(32px,4.4vw,54px);line-height:1.04;letter-spacing:-.018em;margin:0 0 14px;}
+  .final h2 b{font-weight:600;color:var(--forest);}
+  .final p{color:var(--ink-soft);font-size:18px;margin:0 auto 28px;max-width:46ch;}
+  .final form{display:flex;gap:10px;max-width:480px;margin:0 auto;}
+  .final input{flex:1;font-family:"Spectral",serif;font-size:16px;padding:16px;background:var(--paper);border:1px solid var(--line-2);border-radius:3px;}
+  .final button{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--forest);color:var(--paper);border:none;padding:0 26px;border-radius:3px;cursor:pointer;font-weight:500;}
+  .final button:hover{background:var(--forest-2);}
+
+  footer{border-top:1px solid var(--line-2);padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-soft);}
+
+  @media(max-width:920px){
+    figure.fig.wide{margin-left:0;margin-right:0;}
+    .ggrid{grid-template-columns:1fr 1fr;gap:24px 0;}
+    .gstat{padding:0 22px;}
+    .gstat:nth-child(2){border-right:none;padding-right:0;}
+    .gstat:nth-child(3){padding-left:0;}
+    .compare{grid-template-columns:1fr;}
+    .inlsign{grid-template-columns:1fr;}
+    .inlsign form{min-width:0;}
+    .rgrid{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    .wrap,.ahead .wrap,.glance .wrap{padding-left:22px;padding-right:22px;}
+    .ggrid{grid-template-columns:1fr;}
+    .gstat{padding:0;border-right:none;border-bottom:1px solid var(--line);padding-bottom:18px;}
+    .gstat:last-child{border-bottom:none;}
+    .final form{flex-direction:column;}
+    .colitem .colbar{width:44px;}
+  }
+</style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <nav>
+    <div class="wrap">
+      <div class="brand">
+        <svg class="g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10.5"/><ellipse cx="12" cy="12" rx="4.5" ry="10.5"/><line x1="1.5" y1="12" x2="22.5" y2="12"/><path d="M3.5 7 q8.5 4 17 0 M3.5 17 q8.5 -4 17 0"/></svg>
+        The Global Ledger
+      </div>
+      <div class="navlinks">
+        <a href="../directions/the-global-ledger.html">Home</a>
+        <a href="hub-corporate-tax.html">Corporate Tax</a>
+        <a href="topic-hub-map.html">Topics</a>
+        <a href="#subscribe" class="nav-cta">Subscribe Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb">
+    <div class="wrap">
+      <a href="../directions/the-global-ledger.html">Home</a>
+      <span class="sep">/</span>
+      <a href="hub-corporate-tax.html">Corporate Tax</a>
+      <span class="sep">/</span>
+      <span class="here">№ 27 · The Estonia Issue</span>
+    </div>
+  </div>
+
+  <!-- ARTICLE HEADER -->
+  <header class="ahead">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="110"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="60" ry="190"/><ellipse cx="200" cy="200" rx="120" ry="190"/>
+        <line x1="10" y1="200" x2="390" y2="200"/><path d="M30 120 q170 60 340 0 M30 280 q170 -60 340 0"/>
+      </svg>
+    </div>
+    <div class="wrap read-col">
+      <div class="tagrow">
+        <span class="tagchip topic">Corporate Tax</span>
+        <span class="tagchip region">Europe · Estonia</span>
+        <span class="tagchip free">Free issue</span>
+      </div>
+      <h1>The country that taxes profit <b>only when you take it out</b>.</h1>
+      <p class="standfirst">Estonia charges 0% on profit you reinvest and 22% the moment you distribute it. We put the numbers behind the system founders everywhere keep citing.</p>
+      <div class="byline">
+        <span>Issue <span class="b-strong">№ 27</span></span>
+        <span class="dot"></span>
+        <span>6 min read</span>
+        <span class="dot"></span>
+        <span>Published <span class="b-strong">Jun 5, 2026</span></span>
+        <span class="dot"></span>
+        <span>By the Editors</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- AT A GLANCE -->
+  <section class="glance">
+    <div class="wrap read-col" style="max-width:980px;">
+      <div class="gtitle">At a glance · the reference figures</div>
+      <div class="ggrid">
+        <div class="gstat">
+          <div class="gn">22<span class="small">%</span></div>
+          <div class="gl">Tax on <b>distributed</b> profit (from 2025)</div>
+          <div class="gsrc">Est. Tax &amp; Customs Board</div>
+        </div>
+        <div class="gstat">
+          <div class="gn">0<span class="small">%</span></div>
+          <div class="gl">Tax on profit kept &amp; <b>reinvested</b></div>
+          <div class="gsrc">PwC Tax Summaries '25</div>
+        </div>
+        <div class="gstat">
+          <div class="gn">24<span class="small">%</span></div>
+          <div class="gl">Scheduled rate from <b>2026</b></div>
+          <div class="gsrc">EY Tax Alert, 2025</div>
+        </div>
+        <div class="gstat">
+          <div class="gn">€22<span class="small">k</span></div>
+          <div class="gl">Tax on €100k profit, <b>if distributed</b></div>
+          <div class="gsrc">22/78 method · author calc</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <article class="body">
+    <div class="wrap read-col">
+
+      <p class="lede">Ask a founder what Estonia's corporate tax rate is and you'll get a number. Ask what an Estonian company actually <em>pays</em>, and you'll get a better question back: paid on what, and when?</p>
+
+      <p class="drop">Because that's the trick. Most countries tax profit the year a company earns it. Estonia waits. <strong>As long as profit stays inside the business, the rate is zero.</strong> The tax only arrives when money leaves — as a dividend, a share buy-back, or a payment dressed up to look like something else. Reinvest everything and you can grow for years having paid no corporate income tax at all.</p>
+
+      <p>It's the cleanest real-world example of this newsletter's whole thesis: <em>taxes aren't rules, they're incentives wearing a uniform.</em> Estonia's uniform says, plainly, <strong>keep it working.</strong></p>
+
+      <!-- HERO CHART -->
+      <figure class="fig wide">
+        <div class="fhead">
+          <div class="fk">Figure 1 · The whole idea, in one comparison</div>
+          <p class="ft">What happens to €100,000 of profit</p>
+        </div>
+        <div class="fbody">
+          <div class="compare">
+            <div class="cbox zero">
+              <div class="clab">Keep &amp; reinvest it</div>
+              <div class="cscene">Profit stays in the company — new hires, equipment, runway.</div>
+              <div class="cbig">€0</div>
+              <div class="csub">Corporate income tax due</div>
+              <div class="cbar"><i style="width:0%"></i></div>
+            </div>
+            <div class="cbox tax">
+              <div class="clab">Distribute it as dividends</div>
+              <div class="cscene">Profit leaves the company and goes to shareholders.</div>
+              <div class="cbig">€22,000</div>
+              <div class="csub">Tax · €78,000 reaches shareholders</div>
+              <div class="cbar"><i style="width:22%"></i></div>
+            </div>
+          </div>
+        </div>
+        <figcaption>
+          <span>Estonia applies its 22% rate at a 22/78 ratio on the net distribution — €78,000 paid out incurs €22,000 of tax. Reinvested profit is untaxed until distributed.</span>
+          <span class="src">Source: Est. Tax &amp; Customs Board, 2025</span>
+        </figcaption>
+      </figure>
+
+      <h2><span class="hn">01 · The mechanism</span>Deferral, not exemption</h2>
+      <p>A common misread is that Estonia is a tax haven. It isn't. The profit <em>is</em> taxed — eventually, at a fully normal European rate. What's unusual is the <strong>timing</strong>. By moving the trigger from "when earned" to "when distributed," Estonia hands every company an interest-free loan equal to the tax it hasn't paid yet, on the condition that the money keeps doing work inside the business.</p>
+
+      <p>That single design choice is why the country punches far above its size in startups per capita, and why founders from Lisbon to Lagos cite it as the system they wish they had. The rate isn't the headline. <strong>The trigger is.</strong></p>
+
+      <div class="pullquote">Estonia didn't lower the price of tax. It changed the moment you pay — and that changed everything.</div>
+
+      <p>There's a catch worth stating plainly, because this newsletter doesn't sell fairy tales: the rate has been climbing. Estonia raised its corporate rate from 20% to 22% in January 2025, abolished the old reduced 14% rate on regular distributions, and has a further increase to 24% scheduled for 2026. The <em>structure</em> is the draw — not a permanently low number.</p>
+
+      <!-- COLUMN CHART -->
+      <figure class="fig">
+        <div class="fhead">
+          <div class="fk">Figure 2 · The number is moving</div>
+          <p class="ft">Estonia's headline corporate rate, on distributed profit</p>
+        </div>
+        <div class="fbody">
+          <div class="cols">
+            <div class="colitem"><div class="colbar" style="height:71%"><span class="colval">20%</span></div></div>
+            <div class="colitem now"><div class="colbar" style="height:79%"><span class="colval">22%</span></div></div>
+            <div class="colitem future"><div class="colbar" style="height:87%"><span class="colval">24%</span></div></div>
+          </div>
+          <div class="colaxis">
+            <div class="colx">2024</div>
+            <div class="colx">2025<b>Current</b></div>
+            <div class="colx">2026<b>Scheduled</b></div>
+          </div>
+        </div>
+        <figcaption>
+          <span>The reduced 14% rate on regular dividend distributions was abolished from 2025; all distributions are now taxed at the single headline rate.</span>
+          <span class="src">Source: EY &amp; IMF, 2025</span>
+        </figcaption>
+      </figure>
+
+      <h2><span class="hn">02 · The context</span>Where 22% actually sits</h2>
+      <p>Strip away the timing and Estonia's rate is unremarkable — squarely mid-pack for Europe and close to the OECD average. The international story of the last few years isn't a race to the bottom anymore; statutory rates have <strong>stabilised</strong>, and a new floor has appeared underneath them. Here's the global field, with the OECD's Pillar Two 15% minimum marked.</p>
+
+      <!-- HORIZONTAL BAR CHART -->
+      <figure class="fig wide">
+        <div class="fhead">
+          <div class="fk">Figure 3 · The global field, 2025</div>
+          <p class="ft">Statutory corporate income tax rates, selected jurisdictions</p>
+        </div>
+        <div class="fbody">
+          <div class="hbars">
+            <div class="refline" style="left:37.5%;"><span class="rl-lab">Pillar Two floor · 15%</span></div>
+            <div class="hbar"><div class="htop"><span class="hname"><b>France</b> — highest in OECD</span><span class="hval">36.1%</span></div><div class="htrack"><div class="hfill" style="width:90%"></div></div></div>
+            <div class="hbar"><div class="htop"><span class="hname">Colombia</span><span class="hval">35.0%</span></div><div class="htrack"><div class="hfill" style="width:87.5%"></div></div></div>
+            <div class="hbar"><div class="htop"><span class="hname">OECD average</span><span class="hval">24.2%</span></div><div class="htrack"><div class="hfill" style="width:60.5%"></div></div></div>
+            <div class="hbar hl"><div class="htop"><span class="hname"><b>Estonia</b> — on distribution</span><span class="hval">22.0%</span></div><div class="htrack"><div class="hfill" style="width:55%"></div></div></div>
+            <div class="hbar"><div class="htop"><span class="hname">United States — federal</span><span class="hval">21.0%</span></div><div class="htrack"><div class="hfill" style="width:52.5%"></div></div></div>
+            <div class="hbar"><div class="htop"><span class="hname">Ireland</span><span class="hval">12.5%</span></div><div class="htrack"><div class="hfill" style="width:31.25%"></div></div></div>
+            <div class="hbar muted"><div class="htop"><span class="hname">UAE &amp; Hungary — lowest positive</span><span class="hval">9.0%</span></div><div class="htrack"><div class="hfill" style="width:22.5%"></div></div></div>
+          </div>
+          <div class="haxis"><span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>40%</span></div>
+        </div>
+        <figcaption>
+          <span>Statutory (headline) rates — the base each applies to differs, so effective rates vary. Many sub-15% jurisdictions now top up to the Pillar Two minimum for large multinationals.</span>
+          <span class="src">Source: OECD &amp; Tax Foundation, 2025</span>
+        </figcaption>
+      </figure>
+
+      <p>The takeaway isn't that 22% is cheap — it plainly isn't. It's that Estonia competes on <em>when</em> rather than <em>how much</em>, and that turns out to matter more to a growing company than a couple of points on the headline rate ever could.</p>
+
+      <!-- INLINE SIGNUP -->
+      <div class="inlsign" id="subscribe">
+        <div class="ist">
+          <h3>Enjoying the Estonia issue?</h3>
+          <p>One country, one idea, one Thursday — straight to your inbox. Free, forever.</p>
+        </div>
+        <form onsubmit="this.querySelector('button').textContent='✓ Subscribed — see you Thursday';return false;">
+          <input type="email" placeholder="you@example.com" required />
+          <button type="submit">Subscribe — free →</button>
+        </form>
+      </div>
+
+      <h2><span class="hn">03 · By the numbers</span>The reference table</h2>
+      <p>The figures behind this issue, in one place — the part you can screenshot and come back to.</p>
+
+      <figure class="fig">
+        <div class="fbody" style="padding-top:8px;padding-bottom:8px;">
+          <table class="dtable">
+            <thead>
+              <tr><th>Jurisdiction</th><th>Headline CIT rate (2025)</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="country">Estonia</td><td class="num">22%</td><td>On distributed profit only · 0% retained</td></tr>
+              <tr><td class="country">Ireland</td><td class="num">12.5%</td><td>Trading income</td></tr>
+              <tr><td class="country">United Arab Emirates</td><td class="num">9%</td><td>Above AED 375k threshold</td></tr>
+              <tr><td class="country">France</td><td class="num">36.1%</td><td>Highest combined in OECD</td></tr>
+              <tr><td class="country">OECD average</td><td class="num">24.2%</td><td>Combined statutory, 2025</td></tr>
+              <tr><td class="country">Global minimum (Pillar Two)</td><td class="num">15%</td><td>Effective floor, large MNEs</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption>
+          <span>Headline statutory rates; effective rates differ by base and incentives. Estonia's rate applies at distribution via the 22/78 method.</span>
+          <span class="src">Compiled by The Global Ledger</span>
+        </figcaption>
+      </figure>
+
+      <p>Next week we follow the thread to the Gulf, where the UAE has just ended its own zero-tax era with a 9% corporate rate — the mirror image of Estonia's bet. Same question, opposite answer.</p>
+
+      <!-- SOURCES -->
+      <div class="sources">
+        <h4>Sources &amp; methodology</h4>
+        <ol>
+          <li><b>Estonian Tax and Customs Board (EMTA)</b> — corporate income tax on distributed profit, 22/78 method, 2025.</li>
+          <li><b>PwC Worldwide Tax Summaries — Estonia</b>, corporate taxes on income, 2025.</li>
+          <li><b>EY</b>, "Estonia: significant tax changes apply in 2025–2026," 2025 (rate increases to 22% in 2025, 24% scheduled 2026).</li>
+          <li><b>OECD</b>, Corporate Tax Statistics 2025 — statutory rates &amp; OECD averages; Pillar Two 15% global minimum.</li>
+          <li><b>Tax Foundation</b>, "Corporate Tax Rates by Country 2025" — cross-country comparison.</li>
+        </ol>
+        <div class="asof">Figures as of June 2026 · reviewed on each update</div>
+        <p class="disclaim">This is editorial analysis, not tax advice. Rates and rules change and vary by circumstance — confirm current figures with a qualified adviser before acting.</p>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- RELATED -->
+  <section class="related">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">⊕</span>
+        <h3>Read Next</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">From the same hubs</span>
+      </div>
+      <div class="rgrid">
+        <a class="rcard"><div class="rk">Corporate Tax · Gulf</div><h4>The end of the zero-tax dream?</h4><p>The UAE's new 9% corporate tax — Estonia's bet, run in reverse.</p></a>
+        <a class="rcard"><div class="rk">Tax Economics · Global</div><h4>The global minimum tax, in human language</h4><p>What Pillar Two's 15% floor actually does, minus the jargon.</p></a>
+        <a class="rcard"><div class="rk">Consumption Tax · Global</div><h4>VAT, GST &amp; sales tax</h4><p>One idea, three headaches, for anyone selling across a border.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="80" ry="190"/><line x1="10" y1="200" x2="390" y2="200"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <h2>One country. One idea. <b>Every Thursday.</b></h2>
+      <p>Join 14,200 founders, students, and curious minds reading the world's tax stories in plain English — with the data to back them.</p>
+      <form onsubmit="this.querySelector('button').textContent='✓ Done';return false;">
+        <input type="email" placeholder="you@example.com" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">The Global Ledger · Issue № 27</span>
+      <span class="mono">© MMXXVI · Data-backed, plain-English</span>
+    </div>
+  </footer>
+
+  <script>
+    // reading progress bar
+    var pb = document.getElementById('progress');
+    function upd(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var pct = max > 0 ? (h.scrollTop || document.body.scrollTop) / max * 100 : 0;
+      pb.style.width = pct + '%';
+    }
+    document.addEventListener('scroll', upd, {passive:true});
+    window.addEventListener('resize', upd);
+    upd();
+  </script>
+</body>
+</html>

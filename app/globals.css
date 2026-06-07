@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f3efe2;
+  --paper-2: #ebe5d3;
+  --paper-3: #e3dcc6;
+  --ink: #16201a;
+  --ink-soft: #4a544a;
+  --forest: #15402c;
+  --forest-2: #1d5739;
+  --money: #3a7d57;
+  --money-l: #5fa37b;
+  --gold: #a9803a;
+  --gold-l: #c79a52;
+  --line: rgba(22, 32, 26, 0.18);
+  --line-2: rgba(22, 32, 26, 0.4);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Drop cap for article opening paragraph */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-spectral), Georgia, serif;
+  font-weight: 500;
+  font-size: 82px;
+  line-height: 0.7;
+  padding: 8px 14px 0 0;
+  color: var(--forest);
+}
+
+/* Pull quote left border */
+.pullquote {
+  border-left: 3px solid var(--forest);
+}
+
+/* Figure wide bleed — resets on mobile via class override */
+.fig-wide {
+  margin-left: -80px;
+  margin-right: -80px;
+}
+
+@media (max-width: 920px) {
+  .fig-wide {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .fig-wide {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Column chart bar transition */
+.col-bar {
+  transition: height 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Horizontal bar fill transition */
+.hbar-fill {
+  transition: width 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Future column bar: dashed diagonal stripe */
+.col-bar-future {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--money-l),
+    var(--money-l) 6px,
+    transparent 6px,
+    transparent 11px
+  );
+  border: 1px dashed var(--money);
+}
+
+/* Meridian motif positioning */
+.meridian-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.meridian-svg {
+  position: absolute;
+  right: -8%;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 150%;
+  opacity: 0.08;
+  color: var(--forest);
+}
+
+.meridian-centered .meridian-svg {
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+}
+
+/* At-a-glance grid responsive */
+@media (max-width: 920px) {
+  .glance-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 560px) {
+  .glance-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Inline signup form responsive */
+@media (max-width: 920px) {
+  .inlsign-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Related cards grid responsive */
+@media (max-width: 920px) {
+  .related-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

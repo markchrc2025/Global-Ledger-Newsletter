@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corporate Tax — The Global Ledger</title>
+<meta name="description" content="How the world taxes companies — rates, regimes, and the structures founders actually care about. Plain-English explainers from The Global Ledger." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f3efe2;
+    --paper-2:#ebe5d3;
+    --paper-3:#e3dcc6;
+    --ink:#16201a;
+    --ink-soft:#4a544a;
+    --forest:#15402c;
+    --forest-2:#1d5739;
+    --money:#3a7d57;
+    --gold:#a9803a;
+    --line:rgba(22,32,26,.18);
+    --line-2:rgba(22,32,26,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:18px;}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 46px;}
+  .narrow{max-width:760px;margin:0 auto;padding:0 46px;}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;}
+  a{color:inherit;text-decoration:none;}
+
+  /* meridian motif */
+  .meridian{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .meridian svg{position:absolute;right:-8%;top:50%;transform:translateY(-50%);height:150%;opacity:.09;color:var(--forest);}
+
+  /* NAV */
+  nav{border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:50;background:var(--paper);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;}
+  .brand .g{width:24px;height:24px;color:var(--forest);}
+  .navlinks{display:flex;gap:8px;align-items:center;}
+  .navlinks a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding:8px 14px;transition:.2s;white-space:nowrap;}
+  .navlinks a:hover{color:var(--forest);}
+  .navlinks a.active{color:var(--forest);}
+  .nav-cta{background:var(--forest);color:var(--paper)!important;border-radius:2px;}
+  .nav-cta:hover{background:var(--forest-2);}
+
+  /* BREADCRUMB */
+  .crumb{border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .crumb .wrap{display:flex;align-items:center;gap:11px;height:42px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .crumb a:hover{color:var(--forest);}
+  .crumb .sep{opacity:.5;}
+  .crumb .here{color:var(--forest);}
+
+  /* HUB HEADER */
+  .hubhead{position:relative;overflow:hidden;border-bottom:1px solid var(--line-2);}
+  .hubhead .wrap{position:relative;z-index:2;padding:70px 46px 60px;}
+  .hubhead .kicker{display:flex;align-items:center;gap:14px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--money);margin-bottom:26px;}
+  .hubhead .kicker .pico{width:30px;height:30px;color:var(--forest);}
+  .hubhead h1{font-family:"Spectral",serif;font-weight:300;font-size:clamp(44px,6vw,84px);line-height:1.0;letter-spacing:-.022em;margin:0 0 24px;max-width:15ch;}
+  .hubhead h1 b{font-weight:600;color:var(--forest);}
+  .hubhead .standfirst{font-size:21px;color:var(--ink-soft);max-width:60ch;margin:0 0 32px;line-height:1.5;}
+  .hubhead .standfirst b{color:var(--ink);font-weight:500;}
+  .hubmeta{display:flex;gap:0;border:1px solid var(--line-2);border-radius:5px;overflow:hidden;max-width:620px;}
+  .hubmeta .hm{padding:16px 22px;border-right:1px solid var(--line);flex:1;}
+  .hubmeta .hm:last-child{border-right:none;}
+  .hubmeta .hm .n{font-family:"Spectral",serif;font-size:28px;color:var(--forest);line-height:1;}
+  .hubmeta .hm .l{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:7px;}
+
+  /* LAYOUT */
+  .hublayout{display:grid;grid-template-columns:1fr 300px;gap:64px;padding:64px 0 20px;}
+
+  /* ESSAY */
+  .essay .secmark{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--money);margin:0 0 18px;display:flex;align-items:center;gap:12px;}
+  .essay .secmark::after{content:"";flex:1;height:1px;background:var(--line);}
+  .essay p{font-size:18.5px;line-height:1.68;margin:0 0 22px;color:var(--ink);}
+  .essay p.lede{font-size:22px;line-height:1.5;color:var(--ink);font-weight:400;}
+  .essay .drop::first-letter{float:left;font-family:"Spectral",serif;font-weight:500;font-size:76px;line-height:.72;padding:7px 14px 0 0;color:var(--forest);}
+  .essay h2{font-family:"Spectral",serif;font-weight:500;font-size:30px;line-height:1.12;margin:46px 0 16px;letter-spacing:-.01em;}
+  .essay h2 .num{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--money);letter-spacing:.1em;vertical-align:middle;margin-right:12px;}
+  .essay em{font-style:italic;}
+  .essay strong{font-weight:600;}
+  .pullquote{border-left:3px solid var(--forest);padding:6px 0 6px 26px;margin:34px 0;font-family:"Spectral",serif;font-style:italic;font-weight:400;font-size:25px;line-height:1.34;color:var(--forest);}
+  .essay .factbox{background:var(--paper-2);border:1px solid var(--line);border-radius:6px;padding:24px 26px;margin:30px 0;}
+  .essay .factbox .fbk{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--money);margin-bottom:12px;}
+  .essay .factbox p{font-size:16px;margin:0;color:var(--ink-soft);line-height:1.55;}
+  .essay .factbox p b{color:var(--ink);}
+  .verify{font-size:13px;color:var(--ink-soft);font-style:italic;border-top:1px solid var(--line);margin-top:14px;padding-top:12px;}
+
+  /* SIDEBAR */
+  .side{position:sticky;top:88px;align-self:start;}
+  .side .card{border:1px solid var(--line-2);border-radius:6px;overflow:hidden;margin-bottom:22px;}
+  .side .card h4{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0;padding:15px 18px;border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .side .card .cbody{padding:6px 18px 14px;}
+  .side .toc a{display:block;font-size:14.5px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--ink-soft);line-height:1.3;}
+  .side .toc a:last-child{border-bottom:none;}
+  .side .toc a:hover{color:var(--forest);}
+  .side .toc a .tn{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--money);margin-right:9px;}
+  /* sidebar signup */
+  .side .sub{background:var(--forest);color:var(--paper);border-radius:6px;padding:24px 22px;}
+  .side .sub .mono{color:#bcd9c5;display:block;margin-bottom:10px;}
+  .side .sub h4{font-family:"Spectral",serif;font-weight:400;font-size:19px;line-height:1.2;margin:0 0 16px;padding:0;border:none;background:none;color:var(--paper);text-transform:none;letter-spacing:normal;}
+  .side .sub form{display:flex;flex-direction:column;gap:9px;}
+  .side .sub input{font-family:"Spectral",serif;font-size:14px;padding:12px 13px;border:1px solid rgba(243,239,226,.3);background:rgba(243,239,226,.06);color:var(--paper);border-radius:3px;}
+  .side .sub input::placeholder{color:rgba(243,239,226,.55);}
+  .side .sub input:focus{outline:none;border-color:var(--paper);}
+  .side .sub button{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--paper);color:var(--forest);border:none;padding:13px;border-radius:3px;cursor:pointer;font-weight:600;transition:.2s;}
+  .side .sub button:hover{background:var(--paper-2);}
+  .side .sub .micro{margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.06em;color:#bcd9c5;}
+
+  /* ISSUE LIST */
+  .issues{border-top:1px solid var(--line-2);padding:64px 0;}
+  .issues .shead{display:flex;align-items:baseline;gap:18px;margin-bottom:8px;}
+  .issues .shead .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--money);letter-spacing:.1em;}
+  .issues .shead h3{font-family:"Spectral",serif;font-weight:500;font-size:27px;margin:0;}
+  .issues .shead .rule{flex:1;height:1px;background:var(--line);}
+  .issues .sub-intro{font-size:16px;color:var(--ink-soft);margin:0 0 36px;}
+  .ilist{display:flex;flex-direction:column;}
+  .irow{display:grid;grid-template-columns:84px 1fr auto;gap:26px;align-items:center;padding:24px 0;border-bottom:1px solid var(--line);transition:.18s;}
+  .irow[href]{cursor:pointer;}
+  .irow[href]:hover{background:var(--paper-2);padding-left:14px;padding-right:14px;border-radius:5px;}
+  .irow[href]:hover .imain h4{color:var(--forest);}
+  .irow:not([href]){cursor:default;}
+  .irow:not([href]) .ino,.irow:not([href]) .imain h4,.irow:not([href]) .imain p{opacity:.62;}
+  .irow .ino{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--money);letter-spacing:.06em;}
+  .irow .imain h4{font-family:"Spectral",serif;font-weight:500;font-size:22px;line-height:1.15;margin:0 0 7px;}
+  .irow .imain p{font-size:15px;color:var(--ink-soft);margin:0;line-height:1.45;max-width:62ch;}
+  .irow .imain .reg{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--money);border:1px solid var(--line-2);border-radius:2px;padding:3px 8px;margin-top:11px;}
+  .irow .imeta{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;}
+  .irow .imeta .read{display:block;color:var(--forest);margin-top:6px;}
+  .irow.locked .imain h4::after{content:" ◆ Premium";font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--gold);vertical-align:middle;margin-left:8px;}
+
+  /* RELATED HUBS */
+  .related{border-top:1px solid var(--line-2);padding:60px 0;}
+  .related .shead{display:flex;align-items:baseline;gap:18px;margin-bottom:30px;}
+  .related .shead .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--money);letter-spacing:.1em;}
+  .related .shead h3{font-family:"Spectral",serif;font-weight:500;font-size:24px;margin:0;}
+  .related .shead .rule{flex:1;height:1px;background:var(--line);}
+  .rgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .rcard{border:1px solid var(--line-2);border-radius:5px;padding:22px 20px;background:var(--paper);transition:.18s;}
+  .rcard:hover{background:var(--paper-2);transform:translateY(-2px);}
+  .rcard .rk{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--money);margin-bottom:12px;}
+  .rcard h4{font-family:"Spectral",serif;font-weight:500;font-size:18px;margin:0 0 6px;}
+  .rcard .ru{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink-soft);}
+  .rcard.region{border-style:dashed;}
+
+  /* FINAL SIGNUP */
+  .final{padding:84px 0;position:relative;overflow:hidden;border-top:1px solid var(--line-2);}
+  .final .meridian svg{left:50%;right:auto;transform:translate(-50%,-50%);}
+  .final .wrap{position:relative;z-index:2;text-align:center;}
+  .final h2{font-family:"Spectral",serif;font-weight:300;font-size:clamp(34px,4.6vw,58px);line-height:1.04;letter-spacing:-.018em;margin:0 0 14px;}
+  .final h2 b{font-weight:600;color:var(--forest);}
+  .final p{color:var(--ink-soft);font-size:18px;margin:0 auto 30px;max-width:46ch;}
+  .final form{display:flex;gap:10px;max-width:500px;margin:0 auto;}
+  .final input{flex:1;font-family:"Spectral",serif;font-size:16px;padding:16px;background:var(--paper-2);border:1px solid var(--line-2);border-radius:3px;}
+  .final button{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:var(--forest);color:var(--paper);border:none;padding:0 28px;border-radius:3px;cursor:pointer;font-weight:500;}
+  .final button:hover{background:var(--forest-2);}
+
+  footer{border-top:1px solid var(--line-2);padding:34px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-soft);}
+
+  @media(max-width:980px){
+    .hublayout{grid-template-columns:1fr;gap:0;}
+    .side{position:static;margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+    .side .card{margin-bottom:0;}
+    .rgrid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:620px){
+    .wrap,.hubhead .wrap{padding-left:22px;padding-right:22px;}
+    .side{grid-template-columns:1fr;}
+    .rgrid{grid-template-columns:1fr;}
+    .irow{grid-template-columns:1fr;gap:8px;}
+    .irow .imeta{text-align:left;}
+    .hubmeta{flex-wrap:wrap;}
+    .final form{flex-direction:column;}
+    .final button{padding:15px;}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <div class="brand">
+        <svg class="g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10.5"/><ellipse cx="12" cy="12" rx="4.5" ry="10.5"/><line x1="1.5" y1="12" x2="22.5" y2="12"/><path d="M3.5 7 q8.5 4 17 0 M3.5 17 q8.5 -4 17 0"/></svg>
+        The Global Ledger
+      </div>
+      <div class="navlinks">
+        <a href="../directions/the-global-ledger.html">Home</a>
+        <a href="#" class="active">Topics</a>
+        <a href="topic-hub-map.html">Hub Map</a>
+        <a href="#subscribe" class="nav-cta">Subscribe Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="crumb">
+    <div class="wrap">
+      <a href="../directions/the-global-ledger.html">Home</a>
+      <span class="sep">/</span>
+      <a href="topic-hub-map.html">Topics</a>
+      <span class="sep">/</span>
+      <span class="here">Corporate Tax</span>
+    </div>
+  </div>
+
+  <!-- HUB HEADER -->
+  <header class="hubhead">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="110"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="60" ry="190"/><ellipse cx="200" cy="200" rx="120" ry="190"/>
+        <line x1="10" y1="200" x2="390" y2="200"/>
+        <path d="M30 120 q170 60 340 0 M30 280 q170 -60 340 0"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <div class="kicker">
+        <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/><line x1="12" y1="13" x2="12" y2="16"/></svg>
+        Topic Hub · Pillar 01
+      </div>
+      <h1>How the world taxes <b>companies</b>.</h1>
+      <p class="standfirst">Corporate tax is where ambition meets arithmetic. <b>This hub is the permanent home</b> for everything The Global Ledger publishes on how businesses are taxed — the rates, the regimes, and the structures founders actually lose sleep over.</p>
+      <div class="hubmeta">
+        <div class="hm"><div class="n">4</div><div class="l">Issues in this hub</div></div>
+        <div class="hm"><div class="n">12</div><div class="l">Jurisdictions covered</div></div>
+        <div class="hm"><div class="n">Weekly</div><div class="l">Updated as rates change</div></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hublayout">
+
+      <!-- ESSAY -->
+      <article class="essay">
+        <p class="secmark">The Pillar · Start here</p>
+        <p class="lede">Ask a founder what their corporate tax rate is and you'll usually get a number. Ask what they actually <em>pay</em>, and you'll get a pause — because the headline rate is the least interesting thing about corporate tax.</p>
+        <p class="drop">Every country answers the same three questions differently: <strong>what</strong> counts as profit, <strong>when</strong> that profit is taxed, and <strong>how much</strong> is left after the deductions, credits, and carve-outs do their work. The headline rate is just the sticker price. The real story — the one this hub exists to tell — lives in the timing and the definitions.</p>
+
+        <p>Consider two companies earning the same profit in two countries with the <em>same</em> 20% rate. One reinvests everything and pays almost nothing for years; the other distributes profit and pays in full. Same rate, wildly different outcomes. That gap is policy, deliberately designed — and understanding it is the difference between a tax bill and a tax strategy.</p>
+
+        <div class="pullquote">A corporate tax rate is a headline. The base it applies to is the whole novel.</div>
+
+        <h2><span class="num">01</span>The four levers every system pulls</h2>
+        <p>Strip away the jurisdiction-specific jargon and corporate tax everywhere is built from four moving parts. Learn these once and every country's system becomes legible:</p>
+        <div class="factbox">
+          <div class="fbk">The mechanics, in plain English</div>
+          <p><b>The rate</b> — the percentage everyone quotes. <b>The base</b> — what that percentage applies to, after deductions. <b>The timing</b> — when the liability actually triggers (earned? distributed? realized?). <b>The credits</b> — the incentives that quietly reduce the final bill. Change any one and the effective tax rate moves, often more than changing the headline rate would.</p>
+        </div>
+
+        <h2><span class="num">02</span>Why timing is the whole game</h2>
+        <p>The most underrated lever is <em>when</em>. Estonia built a growth story on a single idea — tax profit only when it leaves the company — and founders worldwide now cite it as a model. Defer the trigger and you hand businesses an interest-free loan in the form of unpaid tax, reinvested in the meantime. It's the clearest example of our whole thesis: <strong>taxes aren't rules, they're incentives wearing a uniform.</strong></p>
+
+        <p>That's why this hub doesn't just track rates. We track the <em>design</em> — because a 9% rate with a generous base can cost more than a 15% rate with none, and the founder who only watches the headline number gets the math exactly backwards.</p>
+
+        <div class="factbox">
+          <div class="fbk">What this hub keeps current</div>
+          <p>Corporate rates and rules change constantly. We maintain this page as rates move — <b>the UAE's 9% regime, Pillar Two's 15% floor, Ireland's 12.5%</b> — so the explainers below stay accurate rather than freezing on their publish date.</p>
+          <p class="verify">Editorial note: figures in each issue are correct as of publication and reviewed on update. Always confirm current rates with a qualified adviser before acting — tax is jurisdiction-specific and changes often.</p>
+        </div>
+
+        <p>Below: every issue we've published on corporate tax, newest first. Start with Estonia if you want the idea that ties the whole hub together — then follow it wherever your own borders take you.</p>
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="side">
+        <div class="card">
+          <h4>On this page</h4>
+          <div class="cbody toc">
+            <a href="#"><span class="tn">→</span>The four levers</a>
+            <a href="#"><span class="tn">→</span>Why timing wins</a>
+            <a href="#issues"><span class="tn">→</span>All issues (4)</a>
+            <a href="#related"><span class="tn">→</span>Related hubs</a>
+          </div>
+        </div>
+        <div class="sub" id="subscribe">
+          <span class="mono">Follow this topic</span>
+          <h4>Get every Corporate Tax issue.</h4>
+          <form onsubmit="this.querySelector('button').textContent='✓ Subscribed';return false;">
+            <input type="email" placeholder="you@example.com" required />
+            <button type="submit">Subscribe — free →</button>
+          </form>
+          <div class="micro">Weekly · no spam · unsubscribe anytime</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ISSUE LIST -->
+  <section class="issues" id="issues">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">↻</span>
+        <h3>Every Issue in This Hub</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">Newest first</span>
+      </div>
+      <p class="sub-intro">Four deep dives, each tagged to its region too. Free issues open in full; premium issues unlock with The Ledger.</p>
+      <div class="ilist">
+
+        <a class="irow" href="article-estonia.html"><div class="ino">№ 27</div>
+          <div class="imain">
+            <h4>The country that taxes profit only when you take it out</h4>
+            <p>Estonia's distribution-based system, and why deferral became a national growth engine founders everywhere keep citing.</p>
+            <span class="reg">Europe · Estonia</span>
+          </div>
+          <div class="imeta">Jun 2026<span class="read">6 min · Free</span></div>
+        </a>
+
+        <a class="irow"><div class="ino">№ 21</div>
+          <div class="imain">
+            <h4>The end of the zero-tax dream? The UAE's new 9%</h4>
+            <p>A region built on no income tax introduces a corporate levy. What changes for founders, free zones, and the expat calculus.</p>
+            <span class="reg">Middle East · UAE</span>
+          </div>
+          <div class="imeta">Apr 2026<span class="read">7 min · Free</span></div>
+        </a>
+
+        <a class="irow locked"><div class="ino">№ 14</div>
+          <div class="imain">
+            <h4>Ireland's 12.5%, and the machinery behind it</h4>
+            <p>How a small rate plus a clever base turned one country into the headquarters of half the software you use.</p>
+            <span class="reg">Europe · Ireland</span>
+          </div>
+          <div class="imeta">Feb 2026<span class="read">8 min · Premium</span></div>
+        </a>
+
+        <a class="irow locked"><div class="ino">№ 09</div>
+          <div class="imain">
+            <h4>Effective vs headline: the rate that actually matters</h4>
+            <p>A worked example across three jurisdictions showing why the number in the press release is rarely the number you pay.</p>
+            <span class="reg">Global</span>
+          </div>
+          <div class="imeta">Jan 2026<span class="read">6 min · Premium</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED HUBS -->
+  <section class="related" id="related">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">⊕</span>
+        <h3>Related Hubs &amp; Regions</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">Keep exploring</span>
+      </div>
+      <div class="rgrid">
+        <a class="rcard"><div class="rk">Sibling topic</div><h4>The Economics of Tax</h4><div class="ru">/topics/tax-economics</div></a>
+        <a class="rcard"><div class="rk">Sibling topic</div><h4>Consumption Tax</h4><div class="ru">/topics/consumption-tax</div></a>
+        <a class="rcard region"><div class="rk">Region</div><h4>Europe Desk</h4><div class="ru">/regions/europe</div></a>
+        <a class="rcard region"><div class="rk">Region</div><h4>Middle East Desk</h4><div class="ru">/regions/middle-east</div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="80" ry="190"/><line x1="10" y1="200" x2="390" y2="200"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <h2>One topic. <b>Every Thursday.</b></h2>
+      <p>Join 14,200 founders, students, and curious minds reading the world's tax stories in plain English.</p>
+      <form onsubmit="this.querySelector('button').textContent='✓ Done';return false;">
+        <input type="email" placeholder="you@example.com" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">The Global Ledger · Corporate Tax Hub</span>
+      <span class="mono">© MMXXVI · Topic Pillar 01 of 05</span>
+    </div>
+  </footer>
+</body>
+</html>

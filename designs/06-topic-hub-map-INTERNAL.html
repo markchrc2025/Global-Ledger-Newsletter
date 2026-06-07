@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Topic Hub Map — The Global Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f3efe2;
+    --paper-2:#ebe5d3;
+    --paper-3:#e3dcc6;
+    --ink:#16201a;
+    --ink-soft:#4a544a;
+    --forest:#15402c;
+    --forest-2:#1d5739;
+    --money:#3a7d57;
+    --gold:#a9803a;
+    --line:rgba(22,32,26,.18);
+    --line-2:rgba(22,32,26,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:18px;}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 46px;}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;}
+  a{color:inherit;text-decoration:none;}
+
+  /* NAV */
+  nav{border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:50;background:var(--paper);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;}
+  .brand .g{width:24px;height:24px;color:var(--forest);}
+  .navlinks{display:flex;gap:8px;align-items:center;}
+  .navlinks a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding:8px 14px;transition:.2s;white-space:nowrap;}
+  .navlinks a:hover{color:var(--forest);}
+  .nav-cta{background:var(--forest);color:var(--paper)!important;border-radius:2px;}
+
+  /* DOC HEADER */
+  .dochead{border-bottom:1px solid var(--line-2);padding:64px 0 54px;position:relative;overflow:hidden;}
+  .dochead .stamp{position:absolute;top:46px;right:46px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--money);border:1px solid var(--money);border-radius:3px;padding:6px 12px;transform:rotate(3deg);white-space:nowrap;}
+  .dochead .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--money);margin-bottom:22px;}
+  .dochead h1{font-family:"Spectral",serif;font-weight:300;font-size:clamp(40px,5.6vw,72px);line-height:1.02;letter-spacing:-.02em;margin:0 0 22px;max-width:18ch;}
+  .dochead h1 b{font-weight:600;color:var(--forest);}
+  .dochead p{font-size:20px;color:var(--ink-soft);max-width:62ch;margin:0;line-height:1.5;}
+  .dochead p b{color:var(--ink);font-weight:500;}
+
+  /* SECTION HEAD */
+  .shead{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;}
+  .shead .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--money);letter-spacing:.1em;}
+  .shead h3{font-family:"Spectral",serif;font-weight:500;font-size:27px;margin:0;letter-spacing:.01em;}
+  .shead .rule{flex:1;height:1px;background:var(--line);}
+  .sintro{font-size:17px;color:var(--ink-soft);max-width:70ch;margin:0 0 40px;line-height:1.55;}
+  .sintro b{color:var(--ink);font-weight:500;}
+
+  section.block{padding:72px 0;border-bottom:1px solid var(--line-2);}
+
+  /* PILLARS */
+  .pillars{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line-2);border-radius:6px;overflow:hidden;}
+  .pillar{padding:26px 22px;border-right:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;}
+  .pillar:last-child{border-right:none;}
+  .pillar:hover{background:var(--paper-2);}
+  .pillar .pnum{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--money);letter-spacing:.1em;margin-bottom:14px;}
+  .pillar .pico{width:34px;height:34px;color:var(--forest);margin-bottom:16px;}
+  .pillar h4{font-family:"Spectral",serif;font-weight:500;font-size:20px;line-height:1.12;margin:0 0 8px;}
+  .pillar .purl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.04em;color:var(--money);margin-bottom:14px;word-break:break-all;}
+  .pillar .pdesc{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin:0 0 18px;}
+  .pillar .feeds{margin-top:auto;}
+  .pillar .feeds .flab{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;padding-top:14px;border-top:1px solid var(--line);}
+  .chip{display:block;font-size:13px;line-height:1.3;padding:8px 11px;background:var(--paper-3);border-radius:3px;margin-bottom:7px;border-left:2px solid var(--money);}
+  .chip.future{background:transparent;border-left:2px dashed var(--line-2);color:var(--ink-soft);font-style:italic;}
+
+  /* MATRIX */
+  .matrix-wrap{border:1px solid var(--line-2);border-radius:6px;overflow:hidden;background:var(--paper);}
+  table.matrix{border-collapse:collapse;width:100%;table-layout:fixed;}
+  table.matrix th,table.matrix td{border:1px solid var(--line);padding:0;vertical-align:top;}
+  table.matrix thead th{background:var(--forest);color:var(--paper);padding:16px 12px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;text-align:left;vertical-align:middle;}
+  table.matrix thead th.corner{background:var(--forest-2);width:128px;}
+  table.matrix thead th .turl{display:block;font-size:8.5px;color:#bcd9c5;margin-top:5px;letter-spacing:.02em;font-weight:400;}
+  table.matrix tbody th{background:var(--paper-2);padding:16px 14px;text-align:left;width:128px;}
+  table.matrix tbody th .rname{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--forest);font-weight:600;}
+  table.matrix tbody th .rurl{display:block;font-family:"IBM Plex Mono",monospace;font-size:8.5px;color:var(--ink-soft);margin-top:5px;}
+  td.cell{height:96px;position:relative;transition:.15s;}
+  td.cell:hover{background:var(--paper-2);}
+  td.cell .issue{display:block;height:100%;padding:13px 14px;}
+  td.cell .ico-corner{position:absolute;top:9px;right:11px;font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--money);letter-spacing:.06em;}
+  td.cell .ititle{font-family:"Spectral",serif;font-weight:500;font-size:14.5px;line-height:1.16;color:var(--ink);display:block;margin-bottom:6px;max-width:90%;}
+  td.cell .istatus{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--money);}
+  td.cell.empty{background:repeating-linear-gradient(135deg,transparent,transparent 9px,rgba(22,32,26,.035) 9px,rgba(22,32,26,.035) 10px);}
+  .mlegend{display:flex;gap:26px;flex-wrap:wrap;margin-top:24px;}
+  .mlegend span{display:flex;align-items:center;gap:9px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .mlegend .sw{width:22px;height:14px;border-radius:2px;border:1px solid var(--line-2);}
+  .mlegend .sw.has{background:var(--paper);border-left:3px solid var(--money);}
+  .mlegend .sw.emp{background:repeating-linear-gradient(135deg,transparent,transparent 4px,rgba(22,32,26,.06) 4px,rgba(22,32,26,.06) 5px);}
+
+  /* ANATOMY of a hub page */
+  .anatomy{display:grid;grid-template-columns:1.15fr 1fr;gap:50px;align-items:start;}
+  .anat-list{list-style:none;margin:0;padding:0;counter-reset:a;}
+  .anat-list li{position:relative;padding:20px 0 20px 56px;border-bottom:1px solid var(--line);}
+  .anat-list li::before{counter-increment:a;content:counter(a,decimal-leading-zero);position:absolute;left:0;top:20px;font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--money);letter-spacing:.06em;}
+  .anat-list li h5{font-family:"Spectral",serif;font-weight:500;font-size:18px;margin:0 0 5px;}
+  .anat-list li p{font-size:14.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+  /* mini wireframe */
+  .wire{border:1px solid var(--line-2);border-radius:6px;background:var(--paper);overflow:hidden;position:sticky;top:88px;}
+  .wire .wbar{height:34px;background:var(--forest);display:flex;align-items:center;padding:0 14px;gap:6px;}
+  .wire .wbar i{width:7px;height:7px;border-radius:50%;background:rgba(243,239,226,.5);}
+  .wire .wbody{padding:20px;}
+  .wblk{border-radius:3px;margin-bottom:9px;}
+  .wblk.eyebrow{width:120px;height:9px;background:var(--money);}
+  .wblk.h{width:88%;height:22px;background:var(--ink);opacity:.82;}
+  .wblk.h2{width:62%;height:22px;background:var(--ink);opacity:.82;margin-bottom:18px;}
+  .wblk.txt{height:8px;background:var(--line-2);}
+  .wblk.txt.s{width:94%;}.wblk.txt.m{width:99%;}.wblk.txt.l{width:78%;margin-bottom:18px;}
+  .wrow{display:flex;gap:8px;margin-bottom:9px;}
+  .wcard{flex:1;height:54px;background:var(--paper-3);border:1px solid var(--line);border-radius:3px;}
+  .wsign{height:46px;background:var(--forest);border-radius:3px;margin-top:14px;opacity:.92;}
+  .wtag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px;}
+
+  /* FLOW / how issue feeds hub */
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:18px;}
+  .fnode{border:1px solid var(--line-2);border-radius:6px;padding:24px 22px;background:var(--paper);text-align:center;}
+  .fnode.accent{background:var(--forest);color:var(--paper);border-color:var(--forest);}
+  .fnode .fk{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--money);margin-bottom:10px;}
+  .fnode.accent .fk{color:#bcd9c5;}
+  .fnode h5{font-family:"Spectral",serif;font-weight:500;font-size:17px;margin:0 0 7px;line-height:1.2;}
+  .fnode p{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.45;}
+  .fnode.accent p{color:#cfe0d4;}
+  .farrow{font-family:"IBM Plex Mono",monospace;font-size:22px;color:var(--money);}
+
+  /* CTA to hub */
+  .seehub{padding:72px 0;text-align:center;}
+  .seehub h3{font-family:"Spectral",serif;font-weight:300;font-size:clamp(30px,4vw,48px);margin:0 0 14px;letter-spacing:-.015em;}
+  .seehub h3 b{font-weight:600;color:var(--forest);}
+  .seehub p{color:var(--ink-soft);max-width:50ch;margin:0 auto 28px;}
+  .seehub .go{display:inline-flex;align-items:center;gap:12px;background:var(--forest);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:16px 26px;border-radius:3px;font-weight:500;transition:.2s;}
+  .seehub .go:hover{background:var(--forest-2);}
+
+  footer{border-top:1px solid var(--line-2);padding:34px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-soft);}
+
+  @media(max-width:1080px){
+    .pillars{grid-template-columns:1fr 1fr;}
+    .pillar{border-bottom:1px solid var(--line);}
+    .pillar:nth-child(even){border-right:none;}
+    .anatomy{grid-template-columns:1fr;}
+    .wire{position:static;}
+    .flow{grid-template-columns:1fr;}
+    .farrow{transform:rotate(90deg);justify-self:center;}
+    table.matrix{font-size:12px;}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 22px;}
+    .pillars{grid-template-columns:1fr;}
+    .pillar:nth-child(odd){border-right:none;}
+    .matrix-scroll{overflow-x:auto;}
+    table.matrix{min-width:760px;}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <div class="brand">
+        <svg class="g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10.5"/><ellipse cx="12" cy="12" rx="4.5" ry="10.5"/><line x1="1.5" y1="12" x2="22.5" y2="12"/><path d="M3.5 7 q8.5 4 17 0 M3.5 17 q8.5 -4 17 0"/></svg>
+        The Global Ledger
+      </div>
+      <div class="navlinks">
+        <a href="hub-corporate-tax.html">Sample Hub</a>
+        <a href="../directions/the-global-ledger.html">Homepage</a>
+        <a href="hub-corporate-tax.html" class="nav-cta">View Live Hub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- DOC HEADER -->
+  <header class="dochead">
+    <div class="wrap">
+      <span class="stamp">Editorial Blueprint · v1</span>
+      <div class="eyebrow">Internal · Information Architecture</div>
+      <h1>The <b>Topic Hub</b> Map.</h1>
+      <p>Five permanent <b>pillar pages</b> form the spine of the site. Every weekly issue links into one of them; regions cross them as a second axis. This is the anchor structure to build around — and the SEO engine that makes a niche newsletter out-rank far bigger sites.</p>
+    </div>
+  </header>
+
+  <!-- THE FIVE PILLARS -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">01</span>
+        <h3>The Five Pillars</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">The Spine</span>
+      </div>
+      <p class="sintro">Each pillar is broad enough to hold <b>20+ future issues</b>, narrow enough to mean something. A pillar is a permanent, evergreen page you <b>update</b> over time — never republish. The solid chips are your seven launch issues; dashed chips are obvious next commissions.</p>
+      <div class="pillars">
+
+        <div class="pillar">
+          <div class="pnum">P—01</div>
+          <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/><line x1="12" y1="13" x2="12" y2="16"/></svg>
+          <h4>Corporate Tax</h4>
+          <div class="purl">/topics/corporate-tax</div>
+          <p class="pdesc">How companies are taxed worldwide — rates, regimes, and the structures founders actually care about.</p>
+          <div class="feeds">
+            <div class="flab">Feeder issues</div>
+            <span class="chip">Estonia: tax profit only when you take it out</span>
+            <span class="chip">UAE's new 9% corporate tax</span>
+            <span class="chip future">Ireland's 12.5% &amp; the IP play</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pnum">P—02</div>
+          <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="8.5"/><path d="M9 9h4.5a2 2 0 0 1 0 4H9m0-4v8m0-4h6"/></svg>
+          <h4>Consumption Tax</h4>
+          <div class="purl">/topics/consumption-tax</div>
+          <p class="pdesc">VAT, GST, and sales tax — the levies on what people spend, and why they trip up every cross-border seller.</p>
+          <div class="feeds">
+            <div class="flab">Feeder issues</div>
+            <span class="chip">VAT, GST &amp; sales tax: one idea, three headaches</span>
+            <span class="chip future">The EU VAT One-Stop-Shop, explained</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pnum">P—03</div>
+          <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg>
+          <h4>Cross-Border &amp; Expat</h4>
+          <div class="purl">/topics/cross-border</div>
+          <p class="pdesc">Living, earning, or moving between tax systems — residency, exit taxes, and the nomad-visa fine print.</p>
+          <div class="feeds">
+            <div class="flab">Feeder issues</div>
+            <span class="chip">Norway's exit tax &amp; the founders leaving</span>
+            <span class="chip future">Digital nomad visas: a tax trap dressed as a beach</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pnum">P—04</div>
+          <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 19h16M6 19V9m4 10V5m4 14v-7m4 7V8"/></svg>
+          <h4>The Economics of Tax</h4>
+          <div class="purl">/topics/tax-economics</div>
+          <p class="pdesc">Why taxes are designed the way they are — incentives, theory, and the policy machinery behind the headlines.</p>
+          <div class="feeds">
+            <div class="flab">Feeder issues</div>
+            <span class="chip">The global minimum tax (Pillar Two), in human language</span>
+            <span class="chip">Carbon border taxes (CBAM) arrive in Europe</span>
+            <span class="chip future">Depreciation as industrial policy</span>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pnum">P—05</div>
+          <svg class="pico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+          <h4>Compliance &amp; Filing</h4>
+          <div class="purl">/topics/compliance</div>
+          <p class="pdesc">The machinery of actually paying — deadlines, forms, tax years, and the how-tos that keep readers out of trouble.</p>
+          <div class="feeds">
+            <div class="flab">Feeder issues</div>
+            <span class="chip">Why the tax year starts in April</span>
+            <span class="chip future">Your first cross-border filing, step by step</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DUAL AXIS MATRIX -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">02</span>
+        <h3>The Second Axis — Region × Topic</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">Dual taxonomy</span>
+      </div>
+      <p class="sintro">The same issue lives in <b>two places at once</b>: its topic pillar <i>and</i> its region hub. A reader who thinks "I care about VAT" and one who thinks "I care about the Gulf" both find their way in. Here are your seven launch issues plotted on both axes — the gaps are your <b>commissioning map</b>.</p>
+      <div class="matrix-scroll">
+      <div class="matrix-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th class="corner">Region ↓ / Topic →</th>
+              <th>Corporate<span class="turl">/corporate-tax</span></th>
+              <th>Consumption<span class="turl">/consumption-tax</span></th>
+              <th>Cross-Border<span class="turl">/cross-border</span></th>
+              <th>Economics<span class="turl">/tax-economics</span></th>
+              <th>Compliance<span class="turl">/compliance</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th><span class="rname">Europe</span><span class="rurl">/regions/europe</span></th>
+              <td class="cell"><span class="issue"><span class="ico-corner">№27</span><span class="ititle">Estonia: tax only on distribution</span><span class="istatus">Launch · live</span></span></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell"><span class="issue"><span class="ititle">CBAM: carbon border taxes</span><span class="istatus">Launch</span></span></td>
+              <td class="cell empty"></td>
+            </tr>
+            <tr>
+              <th><span class="rname">Middle East</span><span class="rurl">/regions/middle-east</span></th>
+              <td class="cell"><span class="issue"><span class="ititle">UAE's new 9% corporate tax</span><span class="istatus">Launch</span></span></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+            </tr>
+            <tr>
+              <th><span class="rname">Nordics</span><span class="rurl">/regions/nordics</span></th>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell"><span class="issue"><span class="ititle">Norway's exit tax</span><span class="istatus">Launch</span></span></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+            </tr>
+            <tr>
+              <th><span class="rname">United Kingdom</span><span class="rurl">/regions/uk</span></th>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell empty"></td>
+              <td class="cell"><span class="issue"><span class="ititle">Why the tax year starts in April</span><span class="istatus">Launch</span></span></td>
+            </tr>
+            <tr>
+              <th><span class="rname">Global</span><span class="rurl">/regions/global</span></th>
+              <td class="cell empty"></td>
+              <td class="cell"><span class="issue"><span class="ititle">VAT, GST &amp; sales tax</span><span class="istatus">Launch</span></span></td>
+              <td class="cell empty"></td>
+              <td class="cell"><span class="issue"><span class="ititle">Pillar Two: the global minimum tax</span><span class="istatus">Launch</span></span></td>
+              <td class="cell empty"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <div class="mlegend">
+        <span><span class="sw has"></span>Launch issue mapped</span>
+        <span><span class="sw emp"></span>Open slot — commission next</span>
+        <span style="color:var(--money)">7 issues · 5 topics · 5 regions</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW AN ISSUE FEEDS A HUB -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">03</span>
+        <h3>How One Issue Does Triple Duty</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">The compounding loop</span>
+      </div>
+      <p class="sintro">This is the move that stops newsletters from dying in search. Each issue is written once, then works in three places — and the evergreen hub is what keeps earning traffic long after the email is forgotten.</p>
+      <div class="flow">
+        <div class="fnode">
+          <div class="fk">Thursday</div>
+          <h5>The Weekly Email</h5>
+          <p>Sent once to the list. Drives opens, replies, and shares — but dies in the inbox by Friday.</p>
+        </div>
+        <div class="farrow">→</div>
+        <div class="fnode accent">
+          <div class="fk">Forever</div>
+          <h5>The Hub Explainer</h5>
+          <p>The same piece lives on its topic pillar as evergreen reference. You update it as rates change — it ranks for years.</p>
+        </div>
+        <div class="farrow">→</div>
+        <div class="fnode">
+          <div class="fk">Cross-link</div>
+          <h5>The Region Page</h5>
+          <p>Tagged to its region too, feeding internal links that lift the whole cluster's authority.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANATOMY OF A HUB PAGE -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">04</span>
+        <h3>Anatomy of a Hub Page</h3>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">The template</span>
+      </div>
+      <p class="sintro">Every one of the five pillars uses the same skeleton. The intro essay is what Google ranks; the issue list is what keeps readers clicking deeper.</p>
+      <div class="anatomy">
+        <ol class="anat-list">
+          <li>
+            <h5>Pillar intro essay</h5>
+            <p>1,500+ evergreen words that comprehensively answer the topic. This is the page that ranks — written to be updated, not replaced.</p>
+          </li>
+          <li>
+            <h5>Chronological issue list</h5>
+            <p>Every issue tagged to this hub, newest first. The spokes that point back up to the pillar.</p>
+          </li>
+          <li>
+            <h5>Cross-links to sibling hubs &amp; regions</h5>
+            <p>"Related: Consumption Tax · Europe." Density of internal links is what signals topical authority.</p>
+          </li>
+          <li>
+            <h5>Topic-specific email signup</h5>
+            <p>"Get every Corporate Tax issue." Capture interest at the moment it's highest.</p>
+          </li>
+          <li>
+            <h5>Structured data (Article + FAQ)</h5>
+            <p>Schema markup so explainers win rich snippets in search results.</p>
+          </li>
+        </ol>
+        <div class="wire" aria-hidden="true">
+          <div class="wbar"><i></i><i></i><i></i></div>
+          <div class="wbody">
+            <div class="wblk eyebrow"></div>
+            <div class="wblk h"></div>
+            <div class="wblk h2"></div>
+            <div class="wblk txt m"></div>
+            <div class="wblk txt s"></div>
+            <div class="wblk txt l"></div>
+            <span class="wtag">Issue list ↓</span>
+            <div class="wrow"><div class="wcard"></div><div class="wcard"></div></div>
+            <div class="wrow"><div class="wcard"></div><div class="wcard"></div></div>
+            <span class="wtag">Topic signup ↓</span>
+            <div class="wsign"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEE THE LIVE HUB -->
+  <section class="seehub">
+    <div class="wrap">
+      <h3>Now see it <b>built</b>.</h3>
+      <p>The Corporate Tax pillar, rendered as a real page — intro essay, issue list, cross-links, and signup, all in the Global Ledger style.</p>
+      <a class="go" href="hub-corporate-tax.html">Open the live Corporate Tax hub →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">The Global Ledger · Editorial Blueprint</span>
+      <span class="mono">5 pillars · 2 axes · 1 system</span>
+    </div>
+  </footer>
+</body>
+</html>

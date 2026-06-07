@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Ledger — Premium · The Global Ledger</title>
+<meta name="description" content="Go beyond the weekly issue. The full archive, country tax playbooks for 40+ jurisdictions, downloadable data, and monthly live Q&A — from $8/month." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f3efe2;
+    --paper-2:#ebe5d3;
+    --paper-3:#e3dcc6;
+    --ink:#16201a;
+    --ink-soft:#4a544a;
+    --forest:#15402c;
+    --forest-2:#1d5739;
+    --money:#3a7d57;
+    --gold:#a9803a;
+    --gold-l:#c79a52;
+    --line:rgba(22,32,26,.18);
+    --line-2:rgba(22,32,26,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-size:18px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 46px;}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:11px;}
+  a{color:inherit;text-decoration:none;}
+
+  .meridian{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+  .meridian svg{position:absolute;right:-8%;top:50%;transform:translateY(-50%);height:152%;opacity:.09;color:var(--forest);}
+
+  /* NAV */
+  nav{border-bottom:1px solid var(--line-2);position:sticky;top:0;z-index:50;background:var(--paper);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;}
+  .brand .g{width:24px;height:24px;color:var(--forest);}
+  .navlinks{display:flex;gap:8px;align-items:center;}
+  .navlinks a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);padding:8px 14px;transition:.2s;white-space:nowrap;}
+  .navlinks a:hover{color:var(--forest);}
+  .nav-cta{background:var(--gold);color:var(--ink)!important;border-radius:2px;font-weight:500;}
+  .nav-cta:hover{background:var(--gold-l);}
+
+  /* BREADCRUMB */
+  .crumb{border-bottom:1px solid var(--line);background:var(--paper-2);}
+  .crumb .wrap{display:flex;align-items:center;gap:11px;height:42px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .crumb a:hover{color:var(--forest);}
+  .crumb .sep{opacity:.5;}
+  .crumb .here{color:var(--forest);}
+
+  /* HERO */
+  .phero{position:relative;overflow:hidden;border-bottom:1px solid var(--line-2);}
+  .phero .wrap{position:relative;z-index:2;padding:72px 46px 64px;text-align:center;}
+  .pbadge{display:inline-flex;align-items:center;gap:9px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:40px;padding:7px 16px;margin-bottom:28px;white-space:nowrap;}
+  .pbadge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+  .phero h1{font-family:"Spectral",serif;font-weight:300;font-size:clamp(44px,6.4vw,84px);line-height:1.0;letter-spacing:-.022em;margin:0 auto 24px;max-width:15ch;}
+  .phero h1 b{font-weight:600;color:var(--forest);}
+  .phero .sub{font-size:21px;color:var(--ink-soft);max-width:54ch;margin:0 auto 36px;line-height:1.5;}
+  .phero .sub b{color:var(--ink);font-weight:500;}
+  .phero .cta-row{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .btn-gold{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--ink);border:none;padding:16px 28px;border-radius:3px;cursor:pointer;font-weight:600;transition:.2s;}
+  .btn-gold:hover{background:var(--gold-l);}
+  .btn-ghost{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--forest);padding:16px 8px;border-bottom:1.5px solid var(--forest);}
+  .phero .reassure{margin-top:22px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+
+  /* VALUE PROPS */
+  .vprops{border-bottom:1px solid var(--line-2);}
+  .vprops .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0;}
+  .vp{padding:38px 30px;border-right:1px solid var(--line);}
+  .vp:last-child{border-right:none;}
+  .vp .vico{width:32px;height:32px;color:var(--forest);margin-bottom:16px;}
+  .vp h3{font-family:"Spectral",serif;font-weight:500;font-size:19px;margin:0 0 8px;}
+  .vp p{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.5;}
+
+  /* SECTION HEAD */
+  .shead{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;}
+  .shead .idx{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--gold);letter-spacing:.1em;}
+  .shead h2{font-family:"Spectral",serif;font-weight:500;font-size:30px;margin:0;letter-spacing:.005em;}
+  .shead .rule{flex:1;height:1px;background:var(--line);}
+  .sintro{font-size:18px;color:var(--ink-soft);max-width:64ch;margin:0 0 38px;line-height:1.55;}
+  .sintro b{color:var(--ink);font-weight:500;}
+  section.block{padding:74px 0;border-bottom:1px solid var(--line-2);}
+
+  /* COUNTRY PLAYBOOKS — killer asset */
+  .pbgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .pbcard{border:1px solid var(--line-2);border-radius:6px;padding:22px 20px;background:var(--paper);position:relative;min-height:150px;display:flex;flex-direction:column;transition:.18s;}
+  .pbcard .pbtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .pbcard .pbregion{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--money);}
+  .pbcard .pbcoord{font-family:"IBM Plex Mono",monospace;font-size:8.5px;letter-spacing:.06em;color:var(--ink-soft);white-space:nowrap;}
+  .pbcard h4{font-family:"Spectral",serif;font-weight:500;font-size:20px;margin:0 0 4px;}
+  .pbcard .pbrate{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;margin-top:auto;}
+  .pbcard.unlocked:hover{background:var(--paper-2);transform:translateY(-2px);border-color:var(--money);}
+  .pbcard.unlocked .pbopen{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--forest);margin-top:8px;}
+  .pbcard.locked{background:var(--paper-2);}
+  .pbcard.locked h4,.pbcard.locked .pbrate{opacity:.45;}
+  .pbcard.locked .lock{position:absolute;top:18px;right:18px;width:15px;height:15px;color:var(--gold);}
+  .pb-more{text-align:center;margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .pb-more b{color:var(--gold);}
+
+  /* SOFT PAYWALL DEMO */
+  .paywrap{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;}
+  .paydemo{border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:var(--paper);position:relative;}
+  .paydemo .pdhead{padding:20px 24px 0;}
+  .paydemo .pdk{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--money);margin-bottom:10px;}
+  .paydemo .pdh{font-family:"Spectral",serif;font-weight:500;font-size:23px;line-height:1.15;margin:0 0 14px;}
+  .paydemo .pdbody{padding:0 24px;font-size:14.5px;color:var(--ink-soft);line-height:1.6;position:relative;}
+  .paydemo .pdbody p{margin:0 0 12px;}
+  .paydemo .fade{position:relative;}
+  .paydemo .fade::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,var(--paper));}
+  .paylock{border-top:1px solid var(--line);background:var(--paper-2);padding:24px;text-align:center;}
+  .paylock .pl-ic{width:22px;height:22px;color:var(--gold);margin:0 auto 10px;display:block;}
+  .paylock .pl-t{font-family:"Spectral",serif;font-size:18px;margin:0 0 4px;}
+  .paylock .pl-s{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .paytext h3{font-family:"Spectral",serif;font-weight:500;font-size:28px;line-height:1.12;margin:0 0 16px;}
+  .paytext p{font-size:17px;color:var(--ink-soft);margin:0 0 14px;line-height:1.55;}
+  .paytext .pt-list{list-style:none;margin:18px 0 0;padding:0;}
+  .paytext .pt-list li{font-size:15px;padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:11px;}
+  .paytext .pt-list li::before{content:"✦";color:var(--gold);}
+
+  /* COMPARISON TABLE */
+  .ctable{border:1px solid var(--line-2);border-radius:8px;overflow:hidden;}
+  .ctable table{width:100%;border-collapse:collapse;}
+  .ctable th,.ctable td{text-align:left;padding:17px 22px;border-bottom:1px solid var(--line);}
+  .ctable thead th{background:var(--paper-2);font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;vertical-align:bottom;}
+  .ctable thead th.col-free{text-align:center;width:140px;color:var(--ink-soft);}
+  .ctable thead th.col-prem{text-align:center;width:160px;color:var(--gold);border-left:1px solid var(--line);background:#efe7d2;}
+  .ctable thead th .pn{font-family:"Spectral",serif;font-size:19px;text-transform:none;letter-spacing:0;display:block;margin-bottom:3px;}
+  .ctable thead th.col-prem .pn{color:var(--gold);}
+  .ctable thead th.col-free .pn{color:var(--forest);}
+  .ctable td.feat{font-size:15.5px;}
+  .ctable td.c{text-align:center;width:140px;}
+  .ctable td.c-prem{text-align:center;width:160px;border-left:1px solid var(--line);background:rgba(169,128,58,.05);}
+  .ctable tbody tr:last-child td{border-bottom:none;}
+  .ck{color:var(--money);font-size:17px;}
+  .ck-prem{color:var(--gold);font-size:17px;}
+  .cx{color:var(--ink-soft);opacity:.4;font-size:15px;}
+  .ctable .feat .fsub{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+
+  /* PRICING */
+  .pricing{text-align:center;}
+  .toggle{display:inline-flex;border:1px solid var(--line-2);border-radius:40px;padding:4px;margin:0 auto 14px;background:var(--paper);}
+  .toggle button{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;border:none;background:none;cursor:pointer;border-radius:30px;color:var(--ink-soft);transition:.2s;}
+  .toggle button.on{background:var(--forest);color:var(--paper);}
+  .save-note{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:34px;height:14px;}
+  .pcards{display:grid;grid-template-columns:1fr 1.15fr;gap:18px;max-width:760px;margin:0 auto;text-align:left;}
+  .pcard{border:1px solid var(--line-2);border-radius:10px;padding:34px 32px;background:var(--paper);position:relative;}
+  .pcard.free{}
+  .pcard.prem{background:var(--forest);color:var(--paper);border-color:var(--forest);}
+  .pcard .badge{position:absolute;top:0;right:0;background:var(--gold);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-bottom-left-radius:8px;font-weight:600;}
+  .pcard .pn{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px;}
+  .pcard.free .pn{color:var(--money);}
+  .pcard.prem .pn{color:var(--gold-l);}
+  .pcard .price{font-family:"Spectral",serif;font-weight:300;font-size:58px;line-height:1;letter-spacing:-.02em;display:flex;align-items:baseline;gap:6px;}
+  .pcard .price .per{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.04em;font-weight:400;}
+  .pcard .billed{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;margin-top:8px;opacity:.7;height:13px;}
+  .pcard ul{list-style:none;margin:22px 0 26px;padding:0;}
+  .pcard li{font-size:14.5px;padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:11px;}
+  .pcard.prem li{border-bottom-color:rgba(243,239,226,.18);}
+  .pcard li::before{content:"→";font-family:"IBM Plex Mono",monospace;color:var(--money);}
+  .pcard.prem li::before{content:"✦";color:var(--gold-l);}
+  .pcard .pbtn{display:block;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:15px;border-radius:3px;cursor:pointer;transition:.2s;font-weight:600;}
+  .pcard.free .pbtn{border:1px solid var(--ink);color:var(--ink);}
+  .pcard.free .pbtn:hover{background:var(--ink);color:var(--paper);}
+  .pcard.prem .pbtn{background:var(--gold);color:var(--ink);border:1px solid var(--gold);}
+  .pcard.prem .pbtn:hover{background:var(--gold-l);}
+  .student{max-width:760px;margin:18px auto 0;border:1px dashed var(--line-2);border-radius:8px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .student .st-t{font-size:15px;}
+  .student .st-t b{color:var(--forest);}
+  .student a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;}
+
+  /* FAQ */
+  .faq{max-width:820px;margin:0 auto;}
+  .faqitem{border-bottom:1px solid var(--line);}
+  .faqitem summary{list-style:none;cursor:pointer;padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;font-family:"Spectral",serif;font-weight:500;font-size:20px;}
+  .faqitem summary::-webkit-details-marker{display:none;}
+  .faqitem .qmark{font-family:"IBM Plex Mono",monospace;font-size:20px;color:var(--gold);transition:.2s;flex:0 0 auto;}
+  .faqitem[open] .qmark{transform:rotate(45deg);}
+  .faqitem .ans{padding:0 0 24px;font-size:16px;color:var(--ink-soft);line-height:1.6;max-width:64ch;}
+
+  /* FINAL */
+  .final{padding:88px 0;position:relative;overflow:hidden;background:var(--forest);color:var(--paper);text-align:center;}
+  .final .meridian svg{left:50%;right:auto;transform:translate(-50%,-50%);opacity:.14;color:#bcd9c5;}
+  .final .wrap{position:relative;z-index:2;}
+  .final .pbadge{color:var(--gold-l);border-color:var(--gold-l);}
+  .final .pbadge .dot{background:var(--gold-l);}
+  .final h2{font-family:"Spectral",serif;font-weight:300;font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-.018em;margin:0 0 16px;}
+  .final h2 b{font-weight:600;color:#bcd9c5;}
+  .final p{color:#cfe0d4;font-size:18px;margin:0 auto 30px;max-width:46ch;}
+  .final .btn-gold{font-size:14px;padding:17px 34px;}
+  .final .reassure{margin-top:20px;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9fbcaa;}
+
+  footer{border-top:1px solid var(--line-2);padding:32px 0;background:var(--paper);}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-soft);}
+
+  @media(max-width:920px){
+    .vprops .wrap{grid-template-columns:1fr 1fr;}
+    .vp:nth-child(2){border-right:none;}
+    .vp{border-bottom:1px solid var(--line);}
+    .pbgrid{grid-template-columns:1fr 1fr;}
+    .paywrap{grid-template-columns:1fr;gap:36px;}
+    .pcards{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    .wrap,.phero .wrap{padding-left:22px;padding-right:22px;}
+    .vprops .wrap{grid-template-columns:1fr;}
+    .vp{border-right:none;}
+    .pbgrid{grid-template-columns:1fr;}
+    .ctable{overflow-x:auto;}
+    .ctable table{min-width:560px;}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <div class="brand">
+        <svg class="g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10.5"/><ellipse cx="12" cy="12" rx="4.5" ry="10.5"/><line x1="1.5" y1="12" x2="22.5" y2="12"/><path d="M3.5 7 q8.5 4 17 0 M3.5 17 q8.5 -4 17 0"/></svg>
+        The Global Ledger
+      </div>
+      <div class="navlinks">
+        <a href="../directions/the-global-ledger.html">Home</a>
+        <a href="hub-corporate-tax.html">Topics</a>
+        <a href="article-estonia.html">Sample Issue</a>
+        <a href="#pricing" class="nav-cta">Go Premium</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="crumb">
+    <div class="wrap">
+      <a href="../directions/the-global-ledger.html">Home</a>
+      <span class="sep">/</span>
+      <span class="here">The Ledger · Premium</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="phero">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="110"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="60" ry="190"/><ellipse cx="200" cy="200" rx="120" ry="190"/>
+        <line x1="10" y1="200" x2="390" y2="200"/><path d="M30 120 q170 60 340 0 M30 280 q170 -60 340 0"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <span class="pbadge"><span class="dot"></span>The Ledger · Premium Membership</span>
+      <h1>Keep the <b>whole world's</b> tax code on your desk.</h1>
+      <p class="sub">The free issue gives you one story a week. <b>Premium gives you the reference library</b> — every back issue, country playbooks for 40+ jurisdictions, the data behind every chart, and the editors on call.</p>
+      <div class="cta-row">
+        <a href="#pricing" class="btn-gold">Go Premium — $8/mo →</a>
+        <a href="#compare" class="btn-ghost">Compare plans</a>
+      </div>
+      <div class="reassure">Cancel anytime · 14-day refund · Student rate available</div>
+    </div>
+  </header>
+
+  <!-- VALUE PROPS -->
+  <section class="vprops">
+    <div class="wrap">
+      <div class="vp">
+        <svg class="vico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h11a2 2 0 0 1 2 2v13M4 5v13a2 2 0 0 0 2 2h11M4 5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2"/><line x1="7" y1="9" x2="13" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+        <h3>The full archive</h3>
+        <p>Every issue since № 01, searchable — not just the latest four free reads.</p>
+      </div>
+      <div class="vp">
+        <svg class="vico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg>
+        <h3>Country playbooks</h3>
+        <p>A standing reference for 40+ jurisdictions — rates, triggers, and the catch.</p>
+      </div>
+      <div class="vp">
+        <svg class="vico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 19h16M6 19V9m4 10V5m4 14v-7m4 7V8"/></svg>
+        <h3>Data &amp; models</h3>
+        <p>Download the figures behind every chart — spreadsheets, sourced and dated.</p>
+      </div>
+      <div class="vp">
+        <svg class="vico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.8-.8L3 20l1-4.2A8.4 8.4 0 1 1 21 11.5z"/></svg>
+        <h3>Live editor Q&amp;A</h3>
+        <p>Monthly open call with the editors — bring the question that's nagging you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTRY PLAYBOOKS -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">◆ 01</span>
+        <h2>The Country Tax Playbooks</h2>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">Premium's killer asset</span>
+      </div>
+      <p class="sintro">A living, one-page reference for each jurisdiction: the headline rate, what actually triggers it, the local quirk that catches people out, and the source. <b>New playbooks added every week.</b> The free issue gives you the story — the playbook gives you the answer.</p>
+      <div class="pbgrid">
+        <a class="pbcard unlocked">
+          <div class="pbtop"><span class="pbregion">Europe</span><span class="pbcoord">59.4°N</span></div>
+          <h4>Estonia</h4>
+          <div class="pbrate">22% · on distribution only</div>
+          <div class="pbopen">Preview →</div>
+        </a>
+        <a class="pbcard unlocked">
+          <div class="pbtop"><span class="pbregion">Gulf</span><span class="pbcoord">25.2°N</span></div>
+          <h4>United Arab Emirates</h4>
+          <div class="pbrate">9% · above AED 375k</div>
+          <div class="pbopen">Preview →</div>
+        </a>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">Europe</span><span class="pbcoord">53.3°N</span></div>
+          <h4>Ireland</h4>
+          <div class="pbrate">12.5% · trading income</div>
+        </div>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">Asia</span><span class="pbcoord">1.3°N</span></div>
+          <h4>Singapore</h4>
+          <div class="pbrate">17% · partial exemptions</div>
+        </div>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">Americas</span><span class="pbcoord">38.9°N</span></div>
+          <h4>United States</h4>
+          <div class="pbrate">21% federal · +state</div>
+        </div>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">Europe</span><span class="pbcoord">51.5°N</span></div>
+          <h4>United Kingdom</h4>
+          <div class="pbrate">25% · 19% small profits</div>
+        </div>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">Europe</span><span class="pbcoord">52.5°N</span></div>
+          <h4>Germany</h4>
+          <div class="pbrate">~30% · incl. trade tax</div>
+        </div>
+        <div class="pbcard locked">
+          <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div class="pbtop"><span class="pbregion">+ 33 more</span><span class="pbcoord">Worldwide</span></div>
+          <h4>40+ jurisdictions</h4>
+          <div class="pbrate">Unlock the full set →</div>
+        </div>
+      </div>
+      <div class="pb-more">Two previews open free · <b>Unlock all 40+ with Premium</b></div>
+    </div>
+  </section>
+
+  <!-- SOFT PAYWALL DEMO -->
+  <section class="block">
+    <div class="wrap">
+      <div class="paywrap">
+        <div class="paydemo" aria-hidden="true">
+          <div class="pdhead">
+            <div class="pdk">Premium issue · preview</div>
+            <p class="pdh">Singapore's territorial system, and the exemption founders miss</p>
+          </div>
+          <div class="pdbody">
+            <p>Singapore taxes corporate profit at a headline 17% — but the number on the tin is almost never what a new company actually pays. Between the partial exemption on the first tranche of profit and the start-up relief scheme, the effective rate in year one can fall to single digits.</p>
+            <p class="fade">The mechanism works like this: the first portion of chargeable income is exempt at a fixed percentage, then a second band receives a partial exemption, and only above that does the full rate bite. For a company earning…</p>
+          </div>
+          <div class="paylock">
+            <svg class="pl-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <p class="pl-t">Keep reading with Premium</p>
+            <p class="pl-s">Full issue · data table · downloadable model</p>
+          </div>
+        </div>
+        <div class="paytext">
+          <h3>The free issue ends where the reference begins.</h3>
+          <p>Every week's deep dive stays free, forever. But premium issues, the country playbooks, and the data tables run deeper — and they're the parts you'll come back to.</p>
+          <p>Premium isn't a different newsletter. It's the <em>same</em> plain-English voice, with the full toolkit attached.</p>
+          <ul class="pt-list">
+            <li>Full premium issues — no cut-off</li>
+            <li>The data table &amp; downloadable model behind each one</li>
+            <li>The matching country playbook, one click away</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="block" id="compare">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">◆ 02</span>
+        <h2>Free vs Premium</h2>
+        <span class="rule"></span>
+        <span class="mono" style="color:var(--ink-soft)">Keep the free issue, always</span>
+      </div>
+      <p class="sintro">The weekly issue stays free for everyone — that's a promise. Premium adds the archive and the reference tools on top.</p>
+      <div class="ctable">
+        <table>
+          <thead>
+            <tr>
+              <th>What you get</th>
+              <th class="col-free"><span class="pn">Free</span>$0 forever</th>
+              <th class="col-prem"><span class="pn">Premium</span>from $8/mo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="feat">The weekly deep-dive issue<span class="fsub">One country, one idea, every Thursday</span></td><td class="c"><span class="ck">✓</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Regional desk briefs + commentary</td><td class="c"><span class="ck">✓</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Plain-English, fully sourced data</td><td class="c"><span class="ck">✓</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">The full issue archive<span class="fsub">Every issue since № 01, searchable</span></td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Country Tax Playbooks<span class="fsub">40+ jurisdictions, added weekly</span></td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Downloadable data &amp; models</td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Monthly live editor Q&amp;A</td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Full premium issues — no paywall</td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+            <tr><td class="feat">Support independent tax journalism</td><td class="c"><span class="cx">—</span></td><td class="c-prem"><span class="ck-prem">✓</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="block pricing" id="pricing">
+    <div class="wrap">
+      <div class="shead" style="justify-content:center;text-align:center;">
+        <h2 style="font-size:34px;">Simple pricing. Cancel anytime.</h2>
+      </div>
+      <div class="toggle" role="tablist" style="margin-top:18px;">
+        <button id="t-month" class="on" onclick="setBilling('month')">Monthly</button>
+        <button id="t-year" onclick="setBilling('year')">Annual</button>
+      </div>
+      <div class="save-note" id="saveNote"></div>
+      <div class="pcards">
+        <div class="pcard free">
+          <div class="pn">The Weekly Edition</div>
+          <div class="price">$0</div>
+          <div class="billed">Free, forever</div>
+          <ul>
+            <li>One deep-dive issue every Thursday</li>
+            <li>Regional desk briefs + commentary</li>
+            <li>Plain-English, sourced data</li>
+            <li>Read in 6 minutes or less</li>
+          </ul>
+          <a class="pbtn" href="../directions/the-global-ledger.html#subscribe">Subscribe free</a>
+        </div>
+        <div class="pcard prem">
+          <span class="badge">Best value</span>
+          <div class="pn">The Ledger — Premium</div>
+          <div class="price"><span id="priceNum">$8</span><span class="per" id="pricePer">/ month</span></div>
+          <div class="billed" id="priceBilled">Billed monthly · cancel anytime</div>
+          <ul>
+            <li>Everything in Free, plus —</li>
+            <li>The full searchable archive</li>
+            <li>Country playbooks · 40+ jurisdictions</li>
+            <li>Downloadable data &amp; models</li>
+            <li>Monthly live editor Q&amp;A</li>
+          </ul>
+          <a class="pbtn" href="#" onclick="return false;">Go Premium →</a>
+        </div>
+      </div>
+      <div class="student">
+        <span class="st-t"><b>Student or just learning the field?</b> Premium is half price — because that's half our audience.</span>
+        <a href="#">Get 50% off →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block">
+    <div class="wrap">
+      <div class="shead">
+        <span class="idx">◆ 03</span>
+        <h2>Questions, answered</h2>
+        <span class="rule"></span>
+      </div>
+      <div class="faq">
+        <details class="faqitem" open>
+          <summary>Is the weekly issue really free forever?<span class="qmark">+</span></summary>
+          <div class="ans">Yes — no asterisk. The Thursday deep dive, the regional briefs, and the sourced data are free for everyone, permanently. Premium adds the archive and reference tools on top; it never takes the free issue away.</div>
+        </details>
+        <details class="faqitem">
+          <summary>Can I cancel anytime?<span class="qmark">+</span></summary>
+          <div class="ans">Anytime, in two clicks, no email-us-to-cancel nonsense. You keep access through the end of the period you've paid for. We also offer a 14-day refund if it isn't for you.</div>
+        </details>
+        <details class="faqitem">
+          <summary>What's the difference between monthly and annual?<span class="qmark">+</span></summary>
+          <div class="ans">Only the price. Annual is $80/year — that's two months free versus paying monthly. Same access either way; annual just costs less and means one fewer thing to think about.</div>
+        </details>
+        <details class="faqitem">
+          <summary>Do you offer a student discount?<span class="qmark">+</span></summary>
+          <div class="ans">Yes — 50% off with any valid student email. A big part of who we write for is people learning the field, and the playbooks make a genuinely good study companion.</div>
+        </details>
+        <details class="faqitem">
+          <summary>How current are the playbooks and data?<span class="qmark">+</span></summary>
+          <div class="ans">Every figure carries a source and an "as of" date, and we revise playbooks as rates change rather than letting them go stale. It's editorial reference, not tax advice — always confirm specifics with a qualified adviser before acting.</div>
+        </details>
+        <details class="faqitem">
+          <summary>Can I expense it, or get a team plan?<span class="qmark">+</span></summary>
+          <div class="ans">Plenty of readers expense Premium — we'll send a proper receipt. For finance teams and classrooms we offer group rates; just reach out and we'll sort it.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="meridian" aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+        <circle cx="200" cy="200" r="190"/><circle cx="200" cy="200" r="120"/><circle cx="200" cy="200" r="60"/>
+        <ellipse cx="200" cy="200" rx="80" ry="190"/><line x1="10" y1="200" x2="390" y2="200"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <span class="pbadge"><span class="dot"></span>The Ledger · Premium</span>
+      <h2>The world's tax code,<br/><b>finally on your side.</b></h2>
+      <p>Start with the free issue this Thursday. Upgrade to Premium whenever the archive's worth it to you.</p>
+      <a href="#pricing" class="btn-gold">Go Premium — $8/mo →</a>
+      <div class="reassure">Cancel anytime · 14-day refund · Student rate available</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">The Global Ledger · The Ledger Premium</span>
+      <span class="mono">© MMXXVI · Free issue, always</span>
+    </div>
+  </footer>
+
+  <script>
+    function setBilling(mode){
+      var num=document.getElementById('priceNum');
+      var per=document.getElementById('pricePer');
+      var billed=document.getElementById('priceBilled');
+      var note=document.getElementById('saveNote');
+      var bm=document.getElementById('t-month');
+      var by=document.getElementById('t-year');
+      if(mode==='year'){
+        num.textContent='$80';
+        per.textContent='/ year';
+        billed.textContent='Billed annually · cancel anytime';
+        note.textContent='✦ Save $16 — two months free';
+        by.classList.add('on'); bm.classList.remove('on');
+      } else {
+        num.textContent='$8';
+        per.textContent='/ month';
+        billed.textContent='Billed monthly · cancel anytime';
+        note.textContent='';
+        bm.classList.add('on'); by.classList.remove('on');
+      }
+    }
+  </script>
+</body>
+</html>
